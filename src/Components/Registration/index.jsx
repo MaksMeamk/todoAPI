@@ -2,43 +2,51 @@ import React from "react";
 import { Button, Form, Input } from "antd";
 import { useState } from "react";
 
-const Regisration = () => {
+const Registration = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [age, setAge] = useState();
     const [gender, setGender] = useState()
-    let handleSubmit;
-    try {
-        handleSubmit = async (e) => {
-            e.preventDefault();
-            const request = await fetch("https://todo-redev.herokuapp.com/api/users/register", {
-                method: "POST",
-                headers: "application/json",
-                body: JSON.stringify({
-                    username,
-                    email,
-                    password,
-                    gender,
-                    age,
-                }),
-            });
-            if (request) {
-                const response = request.json();
-                console.log(response)
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(username);
+        try {
+            const request = await fetch("https://todo-redev.herokuapp.com/api/users/register",
+                {
+                    method: "POST",
+                    headers: { 'Content-Type': "application/json" },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        gender,
+                        age,
+                    }),
+                });
+            const response = await request.json();
+            console.log(response)
+            if (!response) {
+                throw new Error('request error');
             }
-            else {
-                new Error('request error')
-            }
+
+
 
         }
-    }
-    catch (error) {
-        console.log(error);
+        catch (error) {
+            console.log(error.message);
+
+        }
+
+
     }
 
+
+
     return (
-        <form onSubmit={() => handleSubmit()}>
+        <form onSubmit={(e) => handleSubmit(e)}>
             <input
                 type="text"
                 placeholder="Input your name"
@@ -69,6 +77,6 @@ const Regisration = () => {
         </form>
     );
 };
-export default Regisration;
+export default Registration;
 
 
