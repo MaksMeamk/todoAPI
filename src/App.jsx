@@ -1,11 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
-import Regisration from './Components/Registration';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 
 function App() {
   return (
     <div className="App">
-      <Regisration />
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<Autorization />} />
+          <Route path="/registration" element={<Registration />} />
+          <Route path="/tasks" element={<Tasks />} />
+        </Routes>
+      </BrowserRouter>
+
     </div>
   );
 }
