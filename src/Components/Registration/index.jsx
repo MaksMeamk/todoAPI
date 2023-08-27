@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Radio } from "antd";
 import { useState } from "react";
 
 const Registration = () => {
@@ -10,9 +10,8 @@ const Registration = () => {
     const [gender, setGender] = useState()
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(username);
+
+    const onFinish = async (e) => {
         try {
             const request = await fetch("https://todo-redev.herokuapp.com/api/users/register",
                 {
@@ -27,54 +26,128 @@ const Registration = () => {
                     }),
                 });
             const response = await request.json();
-            console.log(response)
             if (!response) {
                 throw new Error('request error');
             }
-
-
+            if (!response.success) {
+                response.errors.forEach(item => {
+                    alert(item.msg)
+                });
+            }
 
         }
         catch (error) {
-            console.log(error.message);
-
+            alert(error.message);
         }
-
-
     }
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
 
 
 
     return (
-        <form onSubmit={(e) => handleSubmit(e)}>
-            <input
-                type="text"
-                placeholder="Input your name"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-            />
-            <input
-                type="text"
-                placeholder="Input your email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-            />
-            <input
-                type="password"
-                placeholder="Input password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-            />
-            <input type="radio" name="gender" value="male" onChange={e => setGender(e.target.value)} checked={gender === 'male'} /> Male
-            <input type="radio" name="gender" value="female" onChange={e => setGender(e.target.value)} checked={gender === 'female'} /> Female
-            <input
-                type="number"
-                placeholder="Input your age"
-                onChange={(e) => setAge(e.target.value)}
-                value={age}
-            />
-            <button type="submit">Registration</button>
-        </form>
+        <Form
+            name="basic"
+            labelCol={{
+                span: 5,
+                offset: 0
+            }}
+            wrapperCol={{
+                span: 16,
+            }}
+            style={{
+                maxWidth: 600,
+            }}
+            initialValues={{
+                remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+        >
+            <h1> Registration</h1>
+            <Form.Item
+                label="Username"
+                name="username"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your username!',
+                    },
+                ]}
+            >
+                <Input onChange={(e) => setUsername(e.target.value)}
+                    value={username} />
+            </Form.Item>
+            <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your email!',
+                    },
+                ]}
+            >
+                <Input type='email' onChange={(e) => setEmail(e.target.value)}
+                    value={email} />
+            </Form.Item>
+            <Form.Item
+                label="Password"
+                name="password"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your password!',
+                    },
+                ]}
+            >
+                <Input.Password onChange={(e) => setPassword(e.target.value)}
+                    value={password} />
+            </Form.Item>
+            <Form.Item
+                label="Gender"
+                name="gender"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please select your gender!',
+                    },
+                ]}
+            >
+                <Radio.Group onChange={(e) => setGender(e.target.value)} value={gender}>
+                    <Radio value={'male'}>Male</Radio>
+                    <Radio value={'female'}>Female</Radio>
+                </Radio.Group>
+            </Form.Item>
+            <Form.Item
+                label="Age"
+                name="age"
+                rules={[
+                    {
+
+                        required: true,
+                        message: 'Please input your age!',
+                    },
+                ]}
+            >
+                <Input type="number" onChange={(e) => setAge(e.target.value)}
+                    value={age} />
+            </Form.Item>
+            <Form.Item
+                wrapperCol={{
+                    offset: 1,
+                    span: 22,
+                }}
+            >
+                <Button type="primary" htmlType="submit">
+                    Registration
+                </Button>
+            </Form.Item>
+        </Form>
+
+
     );
 };
 export default Registration;
