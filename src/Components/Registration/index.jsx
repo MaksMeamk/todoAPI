@@ -152,7 +152,7 @@ const Registration = () => {
         }}
       >
         <Button type="primary" htmlType="submit">
-          Registration
+          Sign Up
         </Button>
       </Form.Item>
     </Form>

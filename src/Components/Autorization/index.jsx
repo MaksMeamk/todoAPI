@@ -104,7 +104,7 @@ const Autorization = () => {
           Sign in
         </Button>
         <Button type="link">
-          <Link to="/registration">Sign up</Link>
+          <Link to="/registration">Sign Up</Link>
         </Button>
       </Form.Item>
     </Form>
