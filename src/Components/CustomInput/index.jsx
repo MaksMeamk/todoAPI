@@ -4,33 +4,32 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 const CustomInput = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const token = localStorage.getItem('token');
 
   const onFinish = async (e) => {
+    console.log(token);
     try {
       const request = await fetch(
-        "https://todo-redev.herokuapp.com/api/auth/login",
+        "https://todo-redev.herokuapp.com/api/todos",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({
-            email,
-            password,
+            title,
           }),
         }
       );
       const response = await request.json();
+
       if (!response) {
         throw new Error("request error");
       }
-      if (!response.token) {
-        throw new Error(response.message);
-      } else {
-        console.log(response);
-        localStorage.setItem("token", response.token);
-        navigate("/tasks");
+      else {
+        setTitle("")
       }
     } catch (error) {
       alert(error);
@@ -42,23 +41,9 @@ const CustomInput = () => {
 
   return (
     <Form
-      /*name="basic"
-      labelCol={{
-        span: 5,
-        offset: 0,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
-      style={{
-        maxWidth: 600,
-      }}*/
-      initialValues={{
-        remember: true,
-      }}
+      name="CustomInput"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      autoComplete="off"
     >
       <Form.Item
         name="InputTask"
@@ -70,8 +55,8 @@ const CustomInput = () => {
         ]}
       >
         <Row justify="center">
-          <Col>
-            <Input onChange={(e) => setEmail(e.target.value)} value={email} />
+          <Col span={15}>
+            <Input onChange={(e) => setTitle(e.target.value)} value={title} />
           </Col>
           <Col>
             <Button type="primary" htmlType="submit">
