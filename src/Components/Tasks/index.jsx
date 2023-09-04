@@ -34,14 +34,16 @@ const Tasks = () => {
         {
           method: "PATCH",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body:JSON.stringify({
+          body: JSON.stringify({
             title,
           })
         }
       );
       const response = await request.json();
+
       if (!response) {
         throw new Error("request error");
       } else {
@@ -51,7 +53,32 @@ const Tasks = () => {
       alert(error);
     }
   };
-  const changeStatus = async (id) => {};
+  const changeStatus = async (id, isCompleted) => {
+    try {
+      const request = await fetch(
+        `https://todo-redev.herokuapp.com/api/todos/${id}/isCompleted`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            isCompleted: !isCompleted,
+          })
+        }
+      );
+      const response = await request.json();
+
+      if (!response) {
+        throw new Error("request error");
+      } else {
+        fetchData();
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const token = localStorage.getItem("token");
   async function fetchData() {
@@ -70,6 +97,7 @@ const Tasks = () => {
         throw new Error("request error");
       } else {
         setResponse(response);
+        console.log(response);
       }
     } catch (error) {
       alert(error);
@@ -77,7 +105,7 @@ const Tasks = () => {
   }
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   return (
     <>

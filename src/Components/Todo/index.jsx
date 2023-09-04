@@ -1,8 +1,8 @@
-import { Row, Col, Button, List, Input } from "antd";
+import { Row, Col, Button, List, Input, Checkbox } from "antd";
 import React from "react";
 import { EditOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { useState } from "react";
-//<SaveOutlined />
+
 
 const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
   const [title, setTitle] = useState(item.title);
@@ -16,9 +16,9 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
       <Row justify={"center"}>
         <Col span={13}>
           {isEdit ? (
-            <Input onChange={(e) => setTitle(e.target.value)} value={title} />
+            <Input onPressEnter={handleEdit} onChange={(e) => setTitle(e.target.value)} value={title} />
           ) : (
-            <span>{title}</span>
+            <Checkbox checked={item.isCompleted} onChange={() => changeStatus(item.id, item.isCompleted)}>{title}</Checkbox>
           )}
         </Col>
         <Col>

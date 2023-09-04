@@ -8,7 +8,7 @@ const Autorization = () => {
   const [password, setPassword] = useState();
   const navigate = useNavigate();
 
-  const onFinish = async (e) => {
+  const onFinish = async () => {
     try {
       const request = await fetch(
         "https://todo-redev.herokuapp.com/api/auth/login",

@@ -17,7 +17,7 @@ const CustomInput = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            title,
+            "title": "Купить гвозди"
           }),
         }
       );
