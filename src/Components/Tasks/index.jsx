@@ -1,11 +1,13 @@
 import React from "react";
 import CustomInput from "../CustomInput";
 import Todo from "../Todo";
-import { Row, Col, List } from "antd";
+import { Row, Col, List, Button, Spin } from "antd";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Tasks = () => {
   const [response, setResponse] = useState([]);
+  const navigate = useNavigate();
   const deleteTask = async (id) => {
     try {
       const request = await fetch(
@@ -20,6 +22,13 @@ const Tasks = () => {
       const response = await request.json();
       if (!response) {
         throw new Error("request error");
+      }
+      if (response.hasOwnProperty("success")) {
+        if (Array.isArray(response.errors))
+          response.errors.forEach((item) => {
+            alert(`${item.param} - ${item.msg}`);
+          });
+        else alert(response.message);
       } else {
         fetchData();
       }
@@ -39,13 +48,20 @@ const Tasks = () => {
           },
           body: JSON.stringify({
             title,
-          })
+          }),
         }
       );
       const response = await request.json();
 
       if (!response) {
         throw new Error("request error");
+      }
+      if (response.hasOwnProperty("success")) {
+        if (Array.isArray(response.errors))
+          response.errors.forEach((item) => {
+            alert(`${item.param} - ${item.msg}`);
+          });
+        else alert(response.message);
       } else {
         fetchData();
       }
@@ -65,13 +81,20 @@ const Tasks = () => {
           },
           body: JSON.stringify({
             isCompleted: !isCompleted,
-          })
+          }),
         }
       );
       const response = await request.json();
 
       if (!response) {
         throw new Error("request error");
+      }
+      if (response.hasOwnProperty("success")) {
+        if (Array.isArray(response.errors))
+          response.errors.forEach((item) => {
+            alert(`${item.param} - ${item.msg}`);
+          });
+        else alert(response.message);
       } else {
         fetchData();
       }
@@ -95,8 +118,18 @@ const Tasks = () => {
       const response = await request.json();
       if (!response) {
         throw new Error("request error");
+      }
+      if (response.hasOwnProperty("success")) {
+        if (Array.isArray(response.errors))
+          response.errors.forEach((item) => {
+            alert(`${item.param} - ${item.msg}`);
+          });
+        else alert(response.message);
       } else {
-        setResponse(response);
+        setResponse([
+          ...response.filter((item) => item.isCompleted === false),
+          ...response.filter((item) => item.isCompleted === true),
+        ]);
         console.log(response);
       }
     } catch (error) {
@@ -106,6 +139,10 @@ const Tasks = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const logOut = () => {
+    navigate("/");
+    localStorage.clear();
+  };
 
   return (
     <>
@@ -116,19 +153,35 @@ const Tasks = () => {
       </Row>
       <Row justify="center">
         <Col span={15}>
-          <CustomInput />
+          <CustomInput fetchData={fetchData} />
         </Col>
       </Row>
       <Row justify="center">
         <Col span={24}>
           <List
+            loading={
+              <Spin tip="Loading" size="large">
+                <div className="content" />
+              </Spin>
+            }
             size="large"
             bordered
             dataSource={response}
             renderItem={(item) => (
-              <Todo key={item.id} item={item} deleteTask={deleteTask} editTask={editTask} changeStatus={changeStatus} />
+              <Todo
+                key={item.id}
+                item={item}
+                deleteTask={deleteTask}
+                editTask={editTask}
+                changeStatus={changeStatus}
+              />
             )}
           />
+        </Col>
+        <Col>
+          <Button type="primary" onClick={() => logOut()}>
+            Log out
+          </Button>
         </Col>
       </Row>
     </>

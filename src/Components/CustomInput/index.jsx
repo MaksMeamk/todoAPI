@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
 
-const CustomInput = () => {
+const CustomInput = ({ fetchData }) => {
   const [title, setTitle] = useState("");
   const token = localStorage.getItem("token");
 
@@ -17,16 +17,24 @@ const CustomInput = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            "title": "Купить гвозди"
+            title,
           }),
         }
       );
       const response = await request.json();
-      console.log(response);
       if (!response) {
         throw new Error("request error");
-      } else {
+      }
+      if (response.hasOwnProperty("success")) {
+        if (Array.isArray(response.errors))
+          response.errors.forEach((item) => {
+            alert(`${item.param} - ${item.msg}`);
+          });
+        else alert(response.message);
+      }
+       else {
         setTitle("");
+        fetchData();
       }
     } catch (error) {
       alert(error);
@@ -38,7 +46,6 @@ const CustomInput = () => {
 
   return (
     <Form
-      onPressEnter={onFinish}
       name="CustomInput"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
