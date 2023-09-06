@@ -52,15 +52,15 @@ const Registration = () => {
 
   return (
     <Row justify="center">
-      <Col span={10}>
+      <Col>
         <Form
           name="basic"
           labelCol={{
-            span: 9,
+            span: 5,
             offset: 0,
           }}
           style={{
-            maxWidth: 600,
+            minWidth: 400,
           }}
           initialValues={{
             remember: true,
@@ -71,7 +71,7 @@ const Registration = () => {
         >
           <Form.Item
             wrapperCol={{
-              offset: 8,
+              offset: 9,
               span: 24,
             }}
           >
@@ -159,7 +159,7 @@ const Registration = () => {
           </Form.Item>
           <Form.Item
             wrapperCol={{
-              offset: 10,
+              offset: 11,
               span: 24,
             }}
           >

@@ -53,8 +53,11 @@ const Autorization = () => {
         <Form
           name="basic"
           labelCol={{
-            span: 7,
+            span: 6,
             offset: 0,
+          }}
+          style={{
+            minWidth: 400,
           }}
           initialValues={{
             remember: true,
@@ -66,7 +69,7 @@ const Autorization = () => {
           <Form.Item
             wrapperCol={{
               span: 24,
-              offset: 7,
+              offset: 9,
             }}
           >
             <h1> Autorization</h1>
@@ -107,7 +110,7 @@ const Autorization = () => {
           <Form.Item
             wrapperCol={{
               span: 24,
-              offset: 7,
+              offset: 10,
             }}
           >
             <Button type="primary" htmlType="submit">

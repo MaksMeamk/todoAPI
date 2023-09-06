@@ -152,6 +152,21 @@ const Tasks = () => {
         </Col>
       </Row>
       <Row justify="center">
+        <Col>
+          <h2>
+            All: {response.length}{" "}
+            <span style={{ color: "orange" }}>
+              In progress:{" "}
+              {response.filter((item) => item.isCompleted === false).length}{" "}
+            </span>
+            <span style={{ color: "green" }}>
+              Successe:{" "}
+              {response.filter((item) => item.isCompleted === true).length}
+            </span>
+          </h2>
+        </Col>
+      </Row>
+      <Row justify="center">
         <Col span={15}>
           <CustomInput fetchData={fetchData} />
         </Col>
