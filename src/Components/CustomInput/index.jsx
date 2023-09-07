@@ -22,7 +22,7 @@ const CustomInput = ({ fetchData }) => {
         }
       );
       const response = await request.json();
-      console.log(response);
+
       if (!response) {
         throw new Error("request error");
       }
@@ -33,7 +33,7 @@ const CustomInput = ({ fetchData }) => {
             alert(`${item.param} - ${item.msg}`);
           });
         }
-      } else if ((response, message)) {
+      } else if (response.message) {
         alert(response.message);
       } else {
         setTitle("");
