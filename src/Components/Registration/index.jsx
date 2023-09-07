@@ -32,12 +32,8 @@ const Registration = () => {
       if (!response) {
         throw new Error("request error");
       }
-      if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors))
-          response.errors.forEach((item) => {
-            alert(`${item.param} - ${item.msg}`);
-          });
-        else alert(response.message);
+      if (response.message) {
+        alert(response.message);
       } else {
         alert("Our congratulations, you are registered!");
         navigate("*");

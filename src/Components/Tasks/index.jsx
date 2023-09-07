@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Tasks = () => {
   const [response, setResponse] = useState([]);
   const navigate = useNavigate();
+  const [isLoad, setIsLoad] = useState(false);
   const deleteTask = async (id) => {
     try {
       const request = await fetch(
@@ -23,12 +24,8 @@ const Tasks = () => {
       if (!response) {
         throw new Error("request error");
       }
-      if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors))
-          response.errors.forEach((item) => {
-            alert(`${item.param} - ${item.msg}`);
-          });
-        else alert(response.message);
+      if (response.message) {
+        alert(response.message);
       } else {
         fetchData();
       }
@@ -56,12 +53,15 @@ const Tasks = () => {
       if (!response) {
         throw new Error("request error");
       }
+
       if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors))
+        if (Array.isArray(response.errors)) {
           response.errors.forEach((item) => {
             alert(`${item.param} - ${item.msg}`);
           });
-        else alert(response.message);
+        }
+      } else if (response.message) {
+        alert(response.message);
       } else {
         fetchData();
       }
@@ -89,12 +89,8 @@ const Tasks = () => {
       if (!response) {
         throw new Error("request error");
       }
-      if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors))
-          response.errors.forEach((item) => {
-            alert(`${item.param} - ${item.msg}`);
-          });
-        else alert(response.message);
+      if (response.message) {
+        alert(response.message);
       } else {
         fetchData();
       }
@@ -105,6 +101,7 @@ const Tasks = () => {
 
   const token = localStorage.getItem("token");
   async function fetchData() {
+    setIsLoad((isLoad) => !isLoad);
     try {
       const request = await fetch(
         "https://todo-redev.herokuapp.com/api/todos",
@@ -119,13 +116,11 @@ const Tasks = () => {
       if (!response) {
         throw new Error("request error");
       }
-      if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors))
-          response.errors.forEach((item) => {
-            alert(`${item.param} - ${item.msg}`);
-          });
-        else alert(response.message);
-      } else {
+      if (response.message) {
+        alert(response.message);
+      }
+      if (Array.isArray(response)) {
+        setIsLoad((isLoad) => !isLoad);
         setResponse([
           ...response.filter((item) => item.isCompleted === false),
           ...response.filter((item) => item.isCompleted === true),
@@ -174,11 +169,7 @@ const Tasks = () => {
       <Row justify="center">
         <Col span={24}>
           <List
-            loading={
-              <Spin tip="Loading" size="large">
-                <div className="content" />
-              </Spin>
-            }
+            loading={isLoad}
             size="large"
             bordered
             dataSource={response}

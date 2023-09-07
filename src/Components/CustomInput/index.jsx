@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input, Row, Col } from "antd";
+import { Button, Form, Input, Row, Col, message } from "antd";
 import { useState } from "react";
 
 const CustomInput = ({ fetchData }) => {
@@ -22,17 +22,20 @@ const CustomInput = ({ fetchData }) => {
         }
       );
       const response = await request.json();
+      console.log(response);
       if (!response) {
         throw new Error("request error");
       }
+
       if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors))
+        if (Array.isArray(response.errors)) {
           response.errors.forEach((item) => {
             alert(`${item.param} - ${item.msg}`);
           });
-        else alert(response.message);
-      }
-       else {
+        }
+      } else if ((response, message)) {
+        alert(response.message);
+      } else {
         setTitle("");
         fetchData();
       }

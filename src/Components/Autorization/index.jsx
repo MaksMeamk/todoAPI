@@ -28,14 +28,9 @@ const Autorization = () => {
       if (!response.token) {
         throw new Error(response.message);
       }
-      if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors))
-          response.errors.forEach((item) => {
-            alert(`${item.param} - ${item.msg}`);
-          });
-        else alert(response.message);
-      } else {
-        console.log(response);
+      if (response.message) {
+        alert(response.message);
+      } else {        
         localStorage.setItem("token", response.token);
         navigate("/tasks");
       }
