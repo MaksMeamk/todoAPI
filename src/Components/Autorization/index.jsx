@@ -2,33 +2,35 @@ import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+//require('dotenv').config()
 
 const Autorization = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [dataAutorization, setDataAutorization] = useState({email: '', password:''})
+  
   const navigate = useNavigate();
+ // console.log(process.env.REACT_APP_LOGINURL);
 
   const onFinish = async () => {
     try {
-      const request = await fetch(
-        "https://todo-redev.herokuapp.com/api/auth/login",
+      const request = await fetch("https://todo-redev.herokuapp.com/api/auth/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
+          body: JSON.stringify(dataAutorization),
         }
       );
       const response = await request.json();
+      
       if (!response) {
         throw new Error("request error");
-      }
-      if (!response.token) {
-        throw new Error(response.message);
-      }
-      if (response.message) {
+      }     
+      if (response.hasOwnProperty("success")) {
+        if (Array.isArray(response.errors)) {
+          response.errors.forEach((item) => {
+            alert(`${item.param} - ${item.msg}`);
+          });
+        }}
+      else if (response.message) {
         alert(response.message);
       } else {        
         localStorage.setItem("token", response.token);
@@ -82,8 +84,8 @@ const Autorization = () => {
           >
             <Input
               type="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={(e) => setDataAutorization((autorization)=>({...autorization, email: e.target.value}))}
+              value={dataAutorization.email}
             />
           </Form.Item>
           <Form.Item
@@ -97,8 +99,8 @@ const Autorization = () => {
             ]}
           >
             <Input.Password
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              onChange={(e) => setDataAutorization((autorization)=>({...autorization, password: e.target.value}))}
+              value={dataAutorization.password}
             />
           </Form.Item>
 

@@ -2,8 +2,10 @@ import React from "react";
 import { Button, Form, Input, Radio, Row, Col } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+//require('dotenv').config()
 
 const Registration = () => {
+  const [dataRegistration, setDataRegistration] = useState({username: '', email: '', password: '', age: '', gender: ''})
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -18,13 +20,7 @@ const Registration = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username,
-            email,
-            password,
-            gender,
-            age,
-          }),
+          body: JSON.stringify(dataRegistration),
         }
       );
       const response = await request.json();
