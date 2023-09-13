@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, Input, Row, Col, message } from "antd";
 import { useState } from "react";
-//require('dotenv').config()
+
 
 const CustomInput = ({ fetchData }) => {
   const [title, setTitle] = useState("");

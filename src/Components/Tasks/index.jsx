@@ -4,10 +4,9 @@ import Todo from "../Todo";
 import { Row, Col, List, Button, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-//require('dotenv').config()
 
 const Tasks = () => {
-  const [response, setResponse] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
   const [isLoad, setIsLoad] = useState(false);
   const deleteTask = async (id) => {
@@ -122,9 +121,9 @@ const Tasks = () => {
       }
       if (Array.isArray(response)) {
         setIsLoad((isLoad) => !isLoad);
-        setResponse([
-          ...response.filter((item) => item.isCompleted === false),
-          ...response.filter((item) => item.isCompleted === true),
+        setTasks([
+          ...response.filter((item) => !item.isCompleted),
+          ...response.filter((item) => item.isCompleted),
         ]);
         console.log(response);
       }
@@ -150,14 +149,14 @@ const Tasks = () => {
       <Row justify="center">
         <Col>
           <h2>
-            All: {response.length}{" "}
+            All: {tasks.length}{" "}
             <span style={{ color: "orange" }}>
               In progress:{" "}
-              {response.filter((item) => item.isCompleted === false).length}{" "}
+              {tasks.filter((item) => !item.isCompleted ).length}{" "}
             </span>
             <span style={{ color: "green" }}>
               Successe:{" "}
-              {response.filter((item) => item.isCompleted === true).length}
+              {tasks.filter((item) => item.isCompleted).length}
             </span>
           </h2>
         </Col>
@@ -173,7 +172,7 @@ const Tasks = () => {
             loading={isLoad}
             size="large"
             bordered
-            dataSource={response}
+            dataSource={tasks}
             renderItem={(item) => (
               <Todo
                 key={item.id}

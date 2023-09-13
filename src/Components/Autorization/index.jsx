@@ -2,17 +2,19 @@ import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-//require('dotenv').config()
+
+
 
 const Autorization = () => {
   const [dataAutorization, setDataAutorization] = useState({email: '', password:''})
   
   const navigate = useNavigate();
- // console.log(process.env.REACT_APP_LOGINURL);
+
 
   const onFinish = async () => {
     try {
-      const request = await fetch("https://todo-redev.herokuapp.com/api/auth/login",
+     
+      const request = await fetch(process.env.REACT_APP_LOGIN_URL,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

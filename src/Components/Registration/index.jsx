@@ -2,21 +2,15 @@ import React from "react";
 import { Button, Form, Input, Radio, Row, Col } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//require('dotenv').config()
 
 const Registration = () => {
   const [dataRegistration, setDataRegistration] = useState({username: '', email: '', password: '', age: '', gender: ''})
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [age, setAge] = useState();
-  const [gender, setGender] = useState();
   const navigate = useNavigate();
 
   const onFinish = async (e) => {
     try {
       const request = await fetch(
-        "https://todo-redev.herokuapp.com/api/users/register",
+        process.env.REACT_APP_REGISRATION_URL,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -80,8 +74,8 @@ const Registration = () => {
             ]}
           >
             <Input
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
+              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,username: e.target.value}))}
+              value={dataRegistration.username}
             />
           </Form.Item>
           <Form.Item
@@ -96,8 +90,8 @@ const Registration = () => {
           >
             <Input
               type="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,email: e.target.value}))}
+              value={dataRegistration.email}
             />
           </Form.Item>
           <Form.Item
@@ -111,8 +105,8 @@ const Registration = () => {
             ]}
           >
             <Input.Password
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,password: e.target.value}))}
+              value={dataRegistration.password}
             />
           </Form.Item>
           <Form.Item
@@ -126,8 +120,8 @@ const Registration = () => {
             ]}
           >
             <Radio.Group
-              onChange={(e) => setGender(e.target.value)}
-              value={gender}
+              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,gender: e.target.value}))}
+              value={dataRegistration.gender}
             >
               <Radio value={"male"}>Male</Radio>
               <Radio value={"female"}>Female</Radio>
@@ -145,8 +139,8 @@ const Registration = () => {
           >
             <Input
               type="number"
-              onChange={(e) => setAge(e.target.value)}
-              value={age}
+              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,age: e.target.value}))}
+              value={dataRegistration.age}
             />
           </Form.Item>
           <Form.Item
