@@ -1,7 +1,7 @@
 import React from "react";
 import CustomInput from "../CustomInput";
 import Todo from "../Todo";
-import { Row, Col, List, Button, Spin } from "antd";
+import { Row, Col, List, Button} from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +12,7 @@ const Tasks = () => {
   const deleteTask = async (id) => {
     try {
       const request = await fetch(
-        `https://todo-redev.herokuapp.com/api/todos/${id}`,
+        process.env.REACT_APP_TODO_URL+`/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -36,7 +36,7 @@ const Tasks = () => {
   const editTask = async (id, title) => {
     try {
       const request = await fetch(
-        `https://todo-redev.herokuapp.com/api/todos/${id}`,
+        process.env.REACT_APP_TODO_URL+`/${id}`,
         {
           method: "PATCH",
           headers: {
@@ -72,7 +72,7 @@ const Tasks = () => {
   const changeStatus = async (id, isCompleted) => {
     try {
       const request = await fetch(
-        `https://todo-redev.herokuapp.com/api/todos/${id}/isCompleted`,
+        process.env.REACT_APP_TODO_URL+`/${id}/isCompleted`,
         {
           method: "PATCH",
           headers: {
@@ -104,7 +104,7 @@ const Tasks = () => {
     setIsLoad((isLoad) => !isLoad);
     try {
       const request = await fetch(
-        "https://todo-redev.herokuapp.com/api/todos",
+        process.env.REACT_APP_TODO_URL,
         {
           method: "GET",
           headers: {

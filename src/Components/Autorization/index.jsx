@@ -3,17 +3,12 @@ import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-
-
 const Autorization = () => {
-  const [dataAutorization, setDataAutorization] = useState({email: '', password:''})
-  
+  const [dataAutorization, setDataAutorization] = useState({email: '', password:''});  
   const navigate = useNavigate();
 
-
   const onFinish = async () => {
-    try {
-     
+    try {     
       const request = await fetch(process.env.REACT_APP_LOGIN_URL,
         {
           method: "POST",
@@ -42,6 +37,7 @@ const Autorization = () => {
       alert(error);
     }
   };
+  
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };

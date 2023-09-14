@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input, Row, Col, message } from "antd";
+import { Button, Form, Input, Row, Col} from "antd";
 import { useState } from "react";
 
 
@@ -10,7 +10,7 @@ const CustomInput = ({ fetchData }) => {
   const onFinish = async (e) => {
     try {
       const request = await fetch(
-        "https://todo-redev.herokuapp.com/api/todos",
+        process.env.REACT_APP_TODO_POST_URL,
         {
           method: "POST",
           headers: {

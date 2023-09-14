@@ -9,21 +9,21 @@ import {
 import { useState } from "react";
 
 const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
-  const [title, setTitle] = useState(item.title);
-  const [isEdit, setIsEdit] = useState(false);
+  const [title, setTitle] = useState({task:item.title, isEdit: false});
+  
   const handleEdit = () => {
-    setIsEdit((value) => !value);
-    editTask(item.id, title);
+    setTitle((title) => ({...title, isEdit:!title.isEdit }));
+    editTask(item.id, title.task);
   };
   return (
     <List.Item style={{ display: "block" }}>
       <Row justify={"center"}>
         <Col span={13}>
-          {isEdit ? (
+          {title.isEdit ? (
             <Input
               onPressEnter={handleEdit}
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
+              onChange={(e) => setTitle((title) => ({...title, task:e.target.value }))}
+              value={title.task}
             />
           ) : (
             <Checkbox
@@ -33,17 +33,17 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
               {item.isCompleted ? (
                 <span style={{ textDecoration: "line-through" }}>{title}</span>
               ) : (
-                <span>{title}</span>
+                <span>{title.task}</span>
               )}
             </Checkbox>
           )}
         </Col>
         <Col>
           <Button>
-            {isEdit ? (
+            {title.isEdit ? (
               <SaveOutlined onClick={() => handleEdit()} />
             ) : (
-              <EditOutlined onClick={() => setIsEdit((value) => !value)} />
+              <EditOutlined onClick={() => setTitle((title) => ({...title, isEdit:!title.isEdit }))} />
             )}
           </Button>
         </Col>

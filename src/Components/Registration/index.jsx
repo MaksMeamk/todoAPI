@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
-  const [dataRegistration, setDataRegistration] = useState({username: '', email: '', password: '', age: '', gender: ''})
+  const [dataRegistration, setDataRegistration] = useState({username: '', email: '', password: '', age: '', gender: ''});
   const navigate = useNavigate();
 
-  const onFinish = async (e) => {
+  const onFinish = async () => {
     try {
       const request = await fetch(
         process.env.REACT_APP_REGISRATION_URL,
