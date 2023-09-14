@@ -31,7 +31,7 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
               onChange={() => changeStatus(item.id, item.isCompleted)}
             >
               {item.isCompleted ? (
-                <span style={{ textDecoration: "line-through" }}>{title}</span>
+                <span style={{ textDecoration: "line-through" }}>{title.task}</span>
               ) : (
                 <span>{title.task}</span>
               )}
