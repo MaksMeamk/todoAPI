@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <div>
         <h3>Class Component</h3>
-        {visible.class ? <LifecycleClassComponent key='1' /> : <div style={{ height: '53px' }}>counter component removed</div>}<Button type="primary" onClick={() => setVisible((visible) => ({ ...visible, class: !visible.class }))}>{visible.class ? <div>Delet class counter</div> : <div>Mount class counter</div>}</Button>
+        {visible.class ? <LifecycleClassComponent /> : <div style={{ height: '53px' }}>counter component removed</div>}<Button type="primary" onClick={() => setVisible((visible) => ({ ...visible, class: !visible.class }))}>{visible.class ? <div>Delet class counter</div> : <div>Mount class counter</div>}</Button>
       </div>
 
       <div>
