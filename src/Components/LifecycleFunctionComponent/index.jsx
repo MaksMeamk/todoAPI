@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const LifecycleFunctionComponent = () => {
+const LifecycleFunctionComponent = React.memo(() => {
   const [count, setCount] = useState(0);
   useEffect(() => {
     console.log("Компонент смонтирован");
@@ -27,6 +27,6 @@ const LifecycleFunctionComponent = () => {
       <br />
     </div>
   );
-};
+});
 
 export default LifecycleFunctionComponent;
