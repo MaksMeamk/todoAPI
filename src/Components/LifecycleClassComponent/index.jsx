@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 
-class LifecycleClassComponent extends React.PureComponent {
+class LifecycleClassComponent extends React.Component {
   shouldComponentUpdate() {
     return this.state.count % 2 == 0 ? false : true;
   }
