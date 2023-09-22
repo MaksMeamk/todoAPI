@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "antd";
 import { useState } from "react";
 import { useEffect } from "react";
+import CountClass from "../CountFunction";
 
 const LifecycleFunctionComponent = React.memo(() => {
   const [count, setCount] = useState(0);
@@ -19,7 +20,7 @@ const LifecycleFunctionComponent = React.memo(() => {
       <Button type="primary" onClick={() => setCount((count) => count + 1)}>
         +
       </Button>
-      <span style={{ display: "inline-block", width: "30px" }}>{count}</span>
+      <CountClass count={count} />
       <Button type="primary" onClick={() => setCount((count) => count - 1)}>
         -
       </Button>

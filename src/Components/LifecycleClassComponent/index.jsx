@@ -2,6 +2,9 @@ import React from "react";
 import { Button } from "antd";
 
 class LifecycleClassComponent extends React.PureComponent {
+  shouldComponentUpdate() {
+    return this.state.count % 2 == 0 ? false : true;
+  }
   componentDidMount() {
     console.log("Компонент смонтирован");
   }
