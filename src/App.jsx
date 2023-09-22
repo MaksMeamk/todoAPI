@@ -6,12 +6,8 @@ function App() {
   const [data, setData] = useState(["яблоко", "груша", "персики"]);
   const [title, setTitle] = useState("");
 
-  const addIII = (index, item) => {
-    setData((data) => {
-      data.splice(index, 1, `!!!${item}`);
-      return [...data];
-    });
-  };
+  const addIII = (index) => {
+    setData((data) => data.map((itemArr, indexArr) => indexArr == index ? `!!!${itemArr}` : itemArr))};
   const addItem = (title) => {
     setData((data) => [...data, title]);
     setTitle("");
