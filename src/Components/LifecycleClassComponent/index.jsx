@@ -1,15 +1,28 @@
 import React from "react";
 import { Button } from "antd";
+import axios from 'axios';
 
 class LifecycleClassComponent extends React.Component {
   shouldComponentUpdate() {
-    return this.state.count % 2 == 0 ? false : true;
+    return this.state.count % 2 === 0 ? false : true;
   }
   componentDidMount() {
+    const fetch = async () => {
+      try {
+        const response = await axios.get('https://todo-redev.herokuapp.com/api/users')
+        console.log(response.data)
+      }
+      catch (error) {
+        console.log(error)
+      }
+    }
+    fetch()
+
     console.log("Компонент смонтирован");
   }
   componentDidUpdate() {
     console.log("Компонент обновлён");
+
   }
   componentWillUnmount() {
     console.log("Компонент удалён");
