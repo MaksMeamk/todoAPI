@@ -15,19 +15,25 @@ function App() {
   };
 
   return (
-    <div className={`App ${theme}`}>
+    <div className={`App`} style={theme.app}>
       <span>Dark</span>
-      <Switch
-        checked={toggle}
-        style={{ margin: "0 10px 0 10px" }}
-        onChange={(e) => changeToggle(e)}
-      />
-      <span>Light</span>
       <ConfigProvider
         theme={{
           components: {
-            Button: { fontSize: "22px", colorPrimary: "red" },
+            Switch: theme.switch,
           },
+        }}
+      >
+        <Switch
+          checked={toggle}
+          style={{ margin: "0 10px 0 10px" }}
+          onChange={(e) => changeToggle(e)}
+        />
+      </ConfigProvider>
+      <span>Light</span>
+      <ConfigProvider
+        theme={{
+          token: theme.button,
         }}
       >
         <div>
@@ -50,31 +56,31 @@ function App() {
             )}
           </Button>
         </div>
-      </ConfigProvider>
 
-      <div>
-        <h3>Function Component</h3>
-        {visible.function ? (
-          <LifecycleFunctionComponent />
-        ) : (
-          <div style={{ height: "53px" }}>counter component removed</div>
-        )}
-        <Button
-          type="primary"
-          onClick={() =>
-            setVisible((visible) => ({
-              ...visible,
-              function: !visible.function,
-            }))
-          }
-        >
+        <div>
+          <h3>Function Component</h3>
           {visible.function ? (
-            <div>Delet function counter</div>
+            <LifecycleFunctionComponent />
           ) : (
-            <div>Mount function counter</div>
+            <div style={{ height: "53px" }}>counter component removed</div>
           )}
-        </Button>
-      </div>
+          <Button
+            type="primary"
+            onClick={() =>
+              setVisible((visible) => ({
+                ...visible,
+                function: !visible.function,
+              }))
+            }
+          >
+            {visible.function ? (
+              <div>Delet function counter</div>
+            ) : (
+              <div>Mount function counter</div>
+            )}
+          </Button>
+        </div>
+      </ConfigProvider>
     </div>
   );
 }
