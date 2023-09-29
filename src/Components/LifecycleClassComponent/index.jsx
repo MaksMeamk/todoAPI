@@ -3,7 +3,7 @@ import { Button } from "antd";
 
 class LifecycleClassComponent extends React.Component {
   shouldComponentUpdate() {
-    return this.state.count % 2 === 0 ? false : true;
+    return this.state.count % 2;
   }
   componentDidMount() {
     console.log("Компонент смонтирован");

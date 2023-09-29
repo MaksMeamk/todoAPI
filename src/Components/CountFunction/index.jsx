@@ -7,6 +7,6 @@ const CountClass = React.memo(
     );
   },
   ({ count: prevCount }, { count: nextCount }) =>
-    nextCount % 2 === 0 ? false : true,
+    nextCount % 2,
 );
 export default CountClass;
