@@ -1,86 +1,72 @@
-import { useState } from "react";
-import "./App.css";
-import LifecycleClassComponent from "./Components/LifecycleClassComponent";
-import LifecycleFunctionComponent from "./Components/LifecycleFunctionComponent";
-import { Button, Switch, ConfigProvider } from "antd";
-import { useTheme } from "./Context/ThemeContext";
+import { Form, Input, Button } from "antd";
 
 function App() {
-  const { theme, changeTheme } = useTheme();
-  const [visible, setVisible] = useState({ class: true, function: true });
-  const [toggle, setToggle] = useState(true);
-  const changeToggle = (e) => {
-    changeTheme(e);
-    setToggle(() => e);
-  };
-
   return (
-    <div className={`App`} style={theme.app}>
-      <span>Dark</span>
-      <ConfigProvider
-        theme={{
-          components: {
-            Switch: theme.switch,
-          },
+    <div className="App">
+      <Form
+        name="basic"
+        labelCol={{
+          span: 8,
         }}
-      >
-        <Switch
-          checked={toggle}
-          style={{ margin: "0 10px 0 10px" }}
-          onChange={(e) => changeToggle(e)}
-        />
-      </ConfigProvider>
-      <span>Light</span>
-      <ConfigProvider
-        theme={{
-          token: theme.button,
+        wrapperCol={{
+          span: 16,
         }}
+        style={{
+          maxWidth: 600,
+        }}
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={console.log("Good finish")}
+        onFinishFailed={console.log("Error")}
+        autoComplete="off"
       >
-        <div>
-          <h3>Class Component</h3>
-          {visible.class ? (
-            <LifecycleClassComponent />
-          ) : (
-            <div style={{ height: "53px" }}>counter component removed</div>
-          )}
-          <Button
-            type="primary"
-            onClick={() =>
-              setVisible((visible) => ({ ...visible, class: !visible.class }))
-            }
-          >
-            {visible.class ? (
-              <div>Delet class counter</div>
-            ) : (
-              <div>Mount class counter</div>
-            )}
-          </Button>
-        </div>
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: "Please input your username!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-        <div>
-          <h3>Function Component</h3>
-          {visible.function ? (
-            <LifecycleFunctionComponent />
-          ) : (
-            <div style={{ height: "53px" }}>counter component removed</div>
-          )}
-          <Button
-            type="primary"
-            onClick={() =>
-              setVisible((visible) => ({
-                ...visible,
-                function: !visible.function,
-              }))
-            }
-          >
-            {visible.function ? (
-              <div>Delet function counter</div>
-            ) : (
-              <div>Mount function counter</div>
-            )}
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          name="remember"
+          valuePropName="checked"
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        ></Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Submit
           </Button>
-        </div>
-      </ConfigProvider>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
