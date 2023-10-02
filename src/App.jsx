@@ -2,11 +2,23 @@ import { Form, Input, Button, Select } from "antd";
 import { useState } from "react";
 
 function App() {
-  const [pass, setPass] = useState("");
+  const [registration, setRegistration] = useState({
+    userName: "",
+    email: "",
+    password: "",
+    dateBirth: "",
+    gender: "",
+    phoneNumber: "",
+  });
+
   const gender = [
     { value: "male", label: "male" },
     { value: "female", label: "female" },
   ];
+  const onFinish = () => {
+    alert(JSON.stringify(registration));
+  };
+
   return (
     <div className="App">
       <Form
@@ -23,7 +35,7 @@ function App() {
         initialValues={{
           remember: true,
         }}
-        onFinish={console.log("Good finish")}
+        onFinish={onFinish}
         onFinishFailed={console.log("Error")}
       >
         <Form.Item
@@ -36,7 +48,15 @@ function App() {
             },
           ]}
         >
-          <Input />
+          <Input
+            value={registration.userName}
+            onChange={(e) =>
+              setRegistration((registration) => ({
+                ...registration,
+                userName: e.target.value,
+              }))
+            }
+          />
         </Form.Item>
         <Form.Item
           label="Email"
@@ -52,7 +72,16 @@ function App() {
             },
           ]}
         >
-          <Input type={"email"} />
+          <Input
+            value={registration.email}
+            type={"email"}
+            onChange={(e) =>
+              setRegistration((registration) => ({
+                ...registration,
+                email: e.target.value,
+              }))
+            }
+          />
         </Form.Item>
 
         <Form.Item
@@ -77,7 +106,15 @@ function App() {
             },
           ]}
         >
-          <Input.Password onChange={(e) => setPass(e.target.value)} />
+          <Input.Password
+            value={registration.password}
+            onChange={(e) =>
+              setRegistration((registration) => ({
+                ...registration,
+                password: e.target.value,
+              }))
+            }
+          />
         </Form.Item>
         <Form.Item
           label="Сonfirm password"
@@ -89,7 +126,7 @@ function App() {
             },
             {
               validator: (rule, value, callback) => {
-                if (!(pass === value)) {
+                if (!(registration.password === value)) {
                   callback("Password fields must be identical");
                 } else {
                   callback();
@@ -110,7 +147,16 @@ function App() {
             },
           ]}
         >
-          <Input type={"date"} />
+          <Input
+            value={registration.dateBirth}
+            type={"date"}
+            onChange={(e) =>
+              setRegistration((registration) => ({
+                ...registration,
+                dateBirth: e.target.value,
+              }))
+            }
+          />
         </Form.Item>
         <Form.Item
           label="Gender"
@@ -122,7 +168,16 @@ function App() {
             },
           ]}
         >
-          <Select options={gender} />
+          <Select
+            value={registration.gender}
+            options={gender}
+            onChange={(e) =>
+              setRegistration((registration) => ({
+                ...registration,
+                gender: e,
+              }))
+            }
+          />
         </Form.Item>
 
         <Form.Item
@@ -135,7 +190,16 @@ function App() {
             },
           ]}
         >
-          <Input type={"number"} />
+          <Input
+            value={registration.phoneNumber}
+            type={"number"}
+            onChange={(e) =>
+              setRegistration((registration) => ({
+                ...registration,
+                phoneNumber: e.target.value,
+              }))
+            }
+          />
         </Form.Item>
 
         <Form.Item
