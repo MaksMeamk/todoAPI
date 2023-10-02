@@ -1,4 +1,4 @@
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select, Modal } from "antd";
 import { useState } from "react";
 
 function App() {
@@ -16,11 +16,30 @@ function App() {
     { value: "female", label: "female" },
   ];
   const onFinish = () => {
-    alert(JSON.stringify(registration));
+    console.log(JSON.stringify(registration, null, 1));
+    setIsModalOpen(true);
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
     <div className="App">
+      <Modal
+        title="Data User"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <span>{JSON.stringify(registration, null, 1)}</span>
+
+        <p>Registration is success</p>
+      </Modal>
       <Form
         name="basic"
         labelCol={{
@@ -36,7 +55,6 @@ function App() {
           remember: true,
         }}
         onFinish={onFinish}
-        onFinishFailed={console.log("Error")}
       >
         <Form.Item
           label="Username"
