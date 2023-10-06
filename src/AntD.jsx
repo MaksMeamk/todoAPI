@@ -1,7 +1,7 @@
 import { Form, Input, Button, Select, Modal } from "antd";
 import { useState } from "react";
 
-const AntD=()=> {
+const AntD = () => {
   const [registration, setRegistration] = useState({
     userName: "",
     email: "",
@@ -41,15 +41,13 @@ const AntD=()=> {
         <p>Registration is success</p>
       </Modal>
       <Form
+        style={{ width: "600px", padding: "25px 0 0 0" }}
         name="basic"
         labelCol={{
-          span: 8,
+          span: 6,
         }}
         wrapperCol={{
           span: 16,
-        }}
-        style={{
-          maxWidth: 600,
         }}
         initialValues={{
           remember: true,
@@ -222,7 +220,7 @@ const AntD=()=> {
 
         <Form.Item
           wrapperCol={{
-            offset: 8,
+            offset: 11,
             span: 16,
           }}
         >
@@ -233,6 +231,6 @@ const AntD=()=> {
       </Form>
     </div>
   );
-}
+};
 
 export default AntD;
