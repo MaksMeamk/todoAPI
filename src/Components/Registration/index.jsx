@@ -1,11 +1,13 @@
 import React from "react";
 import { Button, Form, Input, Radio, Row, Col } from "antd";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+import { addEmail, addGender, addPassword, addUserName, addAge } from "../../Redux/actions/registartionAction";
 
 const Registration = () => {
-  const [dataRegistration, setDataRegistration] = useState({username: '', email: '', password: '', age: '', gender: ''});
   const navigate = useNavigate();
+  const { userName, email, password, age, gender } = useSelector(state => state.registaration)
+  const dispatch = useDispatch();
 
   const onFinish = async () => {
     try {
@@ -14,7 +16,7 @@ const Registration = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataRegistration),
+          body: JSON.stringify({ userName, email, password, age, gender }),
         }
       );
       const response = await request.json();
@@ -74,8 +76,8 @@ const Registration = () => {
             ]}
           >
             <Input
-              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,username: e.target.value}))}
-              value={dataRegistration.username}
+              onChange={(e) => dispatch(addUserName(e.target.value))}
+              value={userName}
             />
           </Form.Item>
           <Form.Item
@@ -90,8 +92,8 @@ const Registration = () => {
           >
             <Input
               type="email"
-              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,email: e.target.value}))}
-              value={dataRegistration.email}
+              onChange={(e) => dispatch(addEmail(e.target.value))}
+              value={email}
             />
           </Form.Item>
           <Form.Item
@@ -105,8 +107,8 @@ const Registration = () => {
             ]}
           >
             <Input.Password
-              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,password: e.target.value}))}
-              value={dataRegistration.password}
+              onChange={(e) => dispatch(addPassword(e.target.value))}
+              value={password}
             />
           </Form.Item>
           <Form.Item
@@ -120,8 +122,8 @@ const Registration = () => {
             ]}
           >
             <Radio.Group
-              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,gender: e.target.value}))}
-              value={dataRegistration.gender}
+              onChange={(e) => dispatch(addGender(e.target.value))}
+              value={gender}
             >
               <Radio value={"male"}>Male</Radio>
               <Radio value={"female"}>Female</Radio>
@@ -139,8 +141,8 @@ const Registration = () => {
           >
             <Input
               type="number"
-              onChange={(e) => setDataRegistration((dataRegistration)=>({...dataRegistration,age: e.target.value}))}
-              value={dataRegistration.age}
+              onChange={(e) => dispatch(addAge(e.target.value))}
+              value={age}
             />
           </Form.Item>
           <Form.Item
