@@ -2,34 +2,39 @@ import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+import { addEmail, addPassword } from "../../Redux/actions/autorizationAction";
 
 const Autorization = () => {
-  const [dataAutorization, setDataAutorization] = useState({email: '', password:''});  
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const { email, password } = useSelector(state => state.autorization)
 
   const onFinish = async () => {
-    try {     
+    console.log({ email, password });
+    try {
       const request = await fetch(process.env.REACT_APP_LOGIN_URL,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataAutorization),
+          body: JSON.stringify({ email, password }),
         }
       );
       const response = await request.json();
-      
+
       if (!response) {
         throw new Error("request error");
-      }     
+      }
       if (response.hasOwnProperty("success")) {
         if (Array.isArray(response.errors)) {
           response.errors.forEach((item) => {
             alert(`${item.param} - ${item.msg}`);
           });
-        }}
+        }
+      }
       else if (response.message) {
         alert(response.message);
-      } else {        
+      } else {
         localStorage.setItem("token", response.token);
         navigate("/tasks");
       }
@@ -37,7 +42,7 @@ const Autorization = () => {
       alert(error);
     }
   };
-  
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -82,8 +87,8 @@ const Autorization = () => {
           >
             <Input
               type="email"
-              onChange={(e) => setDataAutorization((autorization)=>({...autorization, email: e.target.value}))}
-              value={dataAutorization.email}
+              onChange={(e) => dispatch(addEmail(e.target.value))}
+              value={email}
             />
           </Form.Item>
           <Form.Item
@@ -97,8 +102,8 @@ const Autorization = () => {
             ]}
           >
             <Input.Password
-              onChange={(e) => setDataAutorization((autorization)=>({...autorization, password: e.target.value}))}
-              value={dataAutorization.password}
+              onChange={(e) => dispatch(addPassword(e.target.value))}
+              value={password}
             />
           </Form.Item>
 
