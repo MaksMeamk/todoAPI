@@ -1,16 +1,21 @@
 import React from "react";
-import { Button, Form, Input, Row, Col} from "antd";
-import { useState } from "react";
+import { Button, Form, Input, Row, Col } from "antd";
+
+import { useSelector, useDispatch } from 'react-redux'
+import { addTitle } from "../../Redux/actions/customInputAction";
 
 
 const CustomInput = ({ fetchData }) => {
-  const [title, setTitle] = useState("");
+
+  const title = useSelector(state => state.customInput);
+  const dispatch = useDispatch();
   const token = localStorage.getItem("token");
 
   const onFinish = async (e) => {
+
     try {
       const request = await fetch(
-        process.env.REACT_APP_TODO_POST_URL,
+        process.env.REACT_APP_TODO_URL,
         {
           method: "POST",
           headers: {
@@ -23,6 +28,7 @@ const CustomInput = ({ fetchData }) => {
         }
       );
       const response = await request.json();
+
 
       if (!response) {
         throw new Error("request error");
@@ -37,7 +43,7 @@ const CustomInput = ({ fetchData }) => {
       } else if (response.message) {
         alert(response.message);
       } else {
-        setTitle("");
+        dispatch(addTitle(''))
         fetchData();
       }
     } catch (error) {
@@ -70,7 +76,7 @@ const CustomInput = ({ fetchData }) => {
         >
           <Row justify="center">
             <Col span={15}>
-              <Input onChange={(e) => setTitle(e.target.value)} value={title} />
+              <Input onChange={(e) => dispatch(addTitle(e.target.value))} value={title} />
             </Col>
             <Col>
               <Button type="primary" htmlType="submit">
