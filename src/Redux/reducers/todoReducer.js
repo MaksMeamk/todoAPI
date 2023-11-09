@@ -7,7 +7,7 @@ export const todoReducer = (state = initialState, action) => {
     case EDIT_TITLE:
       return { ...state, task: action.payload };
     case EDIT_STATUS:
-      return { ...state, isEdit: action.payload };
+      return { ...state, isEdit: !state.isEdit };
     default:
       return state;
   }

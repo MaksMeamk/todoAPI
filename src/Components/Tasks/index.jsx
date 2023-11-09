@@ -2,11 +2,12 @@ import React from "react";
 import CustomInput from "../CustomInput";
 import Todo from "../Todo";
 import { Row, Col, List, Button } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatusLoad } from "../../Redux/actions/taskLoadAction";
 import { load } from "../../Redux/actions/tasksAction";
+
 
 const Tasks = () => {
   //const [tasks, setTasks] = useState([]);
@@ -101,7 +102,7 @@ const Tasks = () => {
 
   const token = localStorage.getItem("token");
   async function fetchData() {
-    dispatch(changeStatusLoad(isLoad));
+    dispatch(changeStatusLoad);
     //setIsLoad((isLoad) => !isLoad);
     try {
       const request = await fetch(process.env.REACT_APP_TODO_URL, {
@@ -118,8 +119,12 @@ const Tasks = () => {
         alert(response.message);
       }
       if (Array.isArray(response)) {
-        dispatch(changeStatusLoad(isLoad));
+        dispatch(changeStatusLoad);
         //setIsLoad((isLoad) => !isLoad);
+        /* setTasks([
+           ...response.filter((item) => !item.isCompleted),
+           ...response.filter((item) => item.isCompleted),
+         ]);*/
         dispatch(
           load([
             ...response.filter((item) => !item.isCompleted),
@@ -173,6 +178,7 @@ const Tasks = () => {
             bordered
             dataSource={tasks}
             renderItem={(item) => (
+
               <Todo
                 key={item.id}
                 item={item}
