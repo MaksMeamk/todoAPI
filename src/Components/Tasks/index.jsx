@@ -1,25 +1,28 @@
 import React from "react";
 import CustomInput from "../CustomInput";
 import Todo from "../Todo";
-import { Row, Col, List, Button} from "antd";
-import { useEffect, useState } from "react";
+import { Row, Col, List, Button } from "antd";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { changeStatusLoad } from "../../Redux/actions/taskLoadAction";
+import { load } from "../../Redux/actions/tasksAction";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState([]);
+  //const [tasks, setTasks] = useState([]);
+  const tasks = useSelector((state) => state.tasks);
   const navigate = useNavigate();
-  const [isLoad, setIsLoad] = useState(false);
+  //const [isLoad, setIsLoad] = useState(false);
+  const dispatch = useDispatch();
+  const isLoad = useSelector((state) => state.taskLoad);
   const deleteTask = async (id) => {
     try {
-      const request = await fetch(
-        process.env.REACT_APP_TODO_URL+`/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const request = await fetch(process.env.REACT_APP_TODO_URL + `/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const response = await request.json();
       if (!response) {
         throw new Error("request error");
@@ -35,19 +38,16 @@ const Tasks = () => {
   };
   const editTask = async (id, title) => {
     try {
-      const request = await fetch(
-        process.env.REACT_APP_TODO_URL+`/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            title,
-          }),
-        }
-      );
+      const request = await fetch(process.env.REACT_APP_TODO_URL + `/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title,
+        }),
+      });
       const response = await request.json();
 
       if (!response) {
@@ -72,7 +72,7 @@ const Tasks = () => {
   const changeStatus = async (id, isCompleted) => {
     try {
       const request = await fetch(
-        process.env.REACT_APP_TODO_URL+`/${id}/isCompleted`,
+        process.env.REACT_APP_TODO_URL + `/${id}/isCompleted`,
         {
           method: "PATCH",
           headers: {
@@ -82,7 +82,7 @@ const Tasks = () => {
           body: JSON.stringify({
             isCompleted: !isCompleted,
           }),
-        }
+        },
       );
       const response = await request.json();
 
@@ -101,17 +101,15 @@ const Tasks = () => {
 
   const token = localStorage.getItem("token");
   async function fetchData() {
-    setIsLoad((isLoad) => !isLoad);
+    dispatch(changeStatusLoad(isLoad));
+    //setIsLoad((isLoad) => !isLoad);
     try {
-      const request = await fetch(
-        process.env.REACT_APP_TODO_URL,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const request = await fetch(process.env.REACT_APP_TODO_URL, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const response = await request.json();
       if (!response) {
         throw new Error("request error");
@@ -120,11 +118,14 @@ const Tasks = () => {
         alert(response.message);
       }
       if (Array.isArray(response)) {
-        setIsLoad((isLoad) => !isLoad);
-        setTasks([
-          ...response.filter((item) => !item.isCompleted),
-          ...response.filter((item) => item.isCompleted),
-        ]);
+        dispatch(changeStatusLoad(isLoad));
+        //setIsLoad((isLoad) => !isLoad);
+        dispatch(
+          load([
+            ...response.filter((item) => !item.isCompleted),
+            ...response.filter((item) => item.isCompleted),
+          ]),
+        );
         console.log(response);
       }
     } catch (error) {
@@ -151,12 +152,10 @@ const Tasks = () => {
           <h2>
             All: {tasks.length}{" "}
             <span style={{ color: "orange" }}>
-              In progress:{" "}
-              {tasks.filter((item) => !item.isCompleted ).length}{" "}
+              In progress: {tasks.filter((item) => !item.isCompleted).length}{" "}
             </span>
             <span style={{ color: "green" }}>
-              Successe:{" "}
-              {tasks.filter((item) => item.isCompleted).length}
+              Successe: {tasks.filter((item) => item.isCompleted).length}
             </span>
           </h2>
         </Col>
