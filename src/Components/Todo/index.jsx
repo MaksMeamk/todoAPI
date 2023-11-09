@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { editStatus, editTitle } from "../../Redux/actions/todoAction";
 
 const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
- // const [title, setTitle] = useState({ task: item.title, isEdit: false });
+  // const [title, setTitle] = useState({ task: item.title, isEdit: false });
   const { title, isEdit } = useSelector((state) => state.todo);
   const dispatch = useDispatch();
-
+  dispatch(editTitle(item.title));
   const handleEdit = () => {
     dispatch(editStatus(!isEdit));
     // setTitle((title) => ({ ...title, isEdit: !title.isEdit }));
