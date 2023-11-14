@@ -9,7 +9,7 @@ export const todoReducer = (state = initialState, action) => {
       return { ...state, [id]: { ...state[id], title: newTitle } };
     case START_EDIT:
       const { id: startId } = action.payload;
-      return { ...state, [startId]: { ...state[startId], isEdit: true, title: state[startId] ? state[startId].title : '' } };
+      return { ...state, [startId]: { ...state[startId], isEdit: true } };
     case END_EDIT:
       const { id: endId } = action.payload;
       return { ...state, [endId]: { ...state[endId], isEdit: false } };

@@ -31,7 +31,7 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
               onPressEnter={handleEdit}
               onChange={(e) => dispatch(editTitle(item.id, e.target.value))}
               //onChange={(e) => setTitle((title) => ({ ...title, task: e.target.value }))}
-              value={title.title}
+              value={title.title === undefined ? item.title : title.title}
             />
           ) : (
             <Checkbox
