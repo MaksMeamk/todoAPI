@@ -1,18 +1,26 @@
 
 
 export const EDIT_TITLE = 'EDIT_TITLE';
-export const EDIT_STATUS = 'EDIT_STATUS';
+export const START_EDIT = 'START_EDIT';
+export const END_EDIT = 'END_EDIT';
 
-export const editStatus = () => {
+export const startEdit = (id) => {
     return {
-        type: EDIT_STATUS,
+        type: START_EDIT,
+        payload: { id }
+    };
+}
+export const endEdit = (id) => {
+    return {
+        type: END_EDIT,
+        payload: { id }
     };
 }
 
 
-export const editTitle = (title) => {
+export const editTitle = (id, newTitle) => {
     return {
         type: EDIT_TITLE,
-        payload: title
+        payload: { id, newTitle }
     }
 }

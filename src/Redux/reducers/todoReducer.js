@@ -1,13 +1,18 @@
-import { EDIT_TITLE, EDIT_STATUS } from "../actions/todoAction";
+import { EDIT_TITLE, START_EDIT, END_EDIT } from "../actions/todoAction";
 
-const initialState = { task: "", isEdit: false };
+const initialState = {};
 
 export const todoReducer = (state = initialState, action) => {
   switch (action.type) {
     case EDIT_TITLE:
-      return { ...state, task: action.payload };
-    case EDIT_STATUS:
-      return { ...state, isEdit: !state.isEdit };
+      const { id, newTitle } = action.payload;
+      return { ...state, [id]: { ...state[id], title: newTitle } };
+    case START_EDIT:
+      const { id: startId } = action.payload;
+      return { ...state, [startId]: { ...state[startId], isEdit: true, title: state[startId] ? state[startId].title : '' } };
+    case END_EDIT:
+      const { id: endId } = action.payload;
+      return { ...state, [endId]: { ...state[endId], isEdit: false } };
     default:
       return state;
   }

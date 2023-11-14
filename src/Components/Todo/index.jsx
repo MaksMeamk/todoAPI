@@ -8,17 +8,19 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editStatus, editTitle } from "../../Redux/actions/todoAction";
+import { startEdit, endEdit, editTitle } from "../../Redux/actions/todoAction";
 
 const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
   //const [title, setTitle] = useState({ task: item.title, isEdit: false });
-  const title = useSelector((state) => state.todo);
+  const title = useSelector((state) => state.todo[item.id] || {});
+  console.log(title);
   const dispatch = useDispatch();
+  //dispatch(editTitle(item.title))
 
   const handleEdit = () => {
-    dispatch(editStatus());
+    dispatch(endEdit(item.id));
     //setTitle((title) => ({ ...title, isEdit: !title.isEdit }));
-    editTask(item.id, title.task);
+    editTask(item.id, title.title);
   };
   return (
     <List.Item style={{ display: "block" }}>
@@ -27,9 +29,9 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
           {title.isEdit ? (
             <Input
               onPressEnter={handleEdit}
-              onChange={(e) => dispatch(editTitle(e.target.value))}
+              onChange={(e) => dispatch(editTitle(item.id, e.target.value))}
               //onChange={(e) => setTitle((title) => ({ ...title, task: e.target.value }))}
-              value={title.task}
+              value={title.title}
             />
           ) : (
             <Checkbox
@@ -38,10 +40,10 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
             >
               {item.isCompleted ? (
                 <span style={{ textDecoration: "line-through" }}>
-                  {title.task}
+                  {item.title}
                 </span>
               ) : (
-                <span>{title.task}</span>
+                <span>{item.title}</span>
               )}
             </Checkbox>
           )}
@@ -51,7 +53,7 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
             {title.isEdit ? (
               <SaveOutlined onClick={() => handleEdit()} />
             ) : (
-              <EditOutlined onClick={() => dispatch(editStatus())} />
+              <EditOutlined onClick={() => dispatch(startEdit(item.id))} />
               //<EditOutlined onClick={() => setTitle((title) => ({ ...title, isEdit: !title.isEdit }))} />
             )}
           </Button>
