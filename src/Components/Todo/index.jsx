@@ -40,10 +40,10 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
             >
               {item.isCompleted ? (
                 <span style={{ textDecoration: "line-through" }}>
-                  {item.title}
+                  {title.title === undefined ? item.title : title.title}
                 </span>
               ) : (
-                <span>{item.title}</span>
+                <span>{title.title === undefined ? item.title : title.title}</span>
               )}
             </Checkbox>
           )}
