@@ -2,18 +2,15 @@ import React from "react";
 import CustomInput from "../CustomInput";
 import Todo from "../Todo";
 import { Row, Col, List, Button } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatusLoad } from "../../Redux/actions/taskLoadAction";
 import { load } from "../../Redux/actions/tasksAction";
 
-
 const Tasks = () => {
-  //const [tasks, setTasks] = useState([]);
   const tasks = useSelector((state) => state.tasks);
   const navigate = useNavigate();
-  //const [isLoad, setIsLoad] = useState(false);
   const dispatch = useDispatch();
   const isLoad = useSelector((state) => state.taskLoad);
   const deleteTask = async (id) => {
@@ -50,11 +47,9 @@ const Tasks = () => {
         }),
       });
       const response = await request.json();
-
       if (!response) {
         throw new Error("request error");
       }
-
       if (response.hasOwnProperty("success")) {
         if (Array.isArray(response.errors)) {
           response.errors.forEach((item) => {
@@ -99,11 +94,9 @@ const Tasks = () => {
       alert(error);
     }
   };
-
   const token = localStorage.getItem("token");
   async function fetchData() {
     dispatch(changeStatusLoad);
-    //setIsLoad((isLoad) => !isLoad);
     try {
       const request = await fetch(process.env.REACT_APP_TODO_URL, {
         method: "GET",
@@ -120,18 +113,13 @@ const Tasks = () => {
       }
       if (Array.isArray(response)) {
         dispatch(changeStatusLoad);
-        //setIsLoad((isLoad) => !isLoad);
-        /* setTasks([
-           ...response.filter((item) => !item.isCompleted),
-           ...response.filter((item) => item.isCompleted),
-         ]);*/
         dispatch(
           load([
             ...response.filter((item) => !item.isCompleted),
             ...response.filter((item) => item.isCompleted),
           ]),
         );
-        console.log(response);
+        //console.log(response);
       }
     } catch (error) {
       alert(error);
@@ -178,7 +166,6 @@ const Tasks = () => {
             bordered
             dataSource={tasks}
             renderItem={(item) => (
-
               <Todo
                 key={item.id}
                 item={item}

@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Registration from "./Components/Registration";
 import Tasks from "./Components/Tasks";
-import Autorization from "./Components/Autorization";
+import Authorization from "./Components/Authorization";
 import PrivateRoute from "./Components/hoc/PrivateRoute";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<Autorization />} />
+          <Route path="*" element={<Authorization />} />
           <Route path="/registration" element={<Registration />} />
           <Route
             path="/tasks"

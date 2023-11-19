@@ -2,11 +2,11 @@ import React from "react";
 import { Button, Form, Input, Radio, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addEmail, addGender, addPassword, addUserName, addAge } from "../../Redux/actions/registartionAction";
+import { addUserData } from "../../Redux/actions/registartionAction";
 
 const Registration = () => {
   const navigate = useNavigate();
-  const { userName, email, password, age, gender } = useSelector(state => state.registaration)
+  const { username, email, password, age, gender } = useSelector(state => state.registration)
   const dispatch = useDispatch();
 
   const onFinish = async () => {
@@ -16,15 +16,24 @@ const Registration = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userName, email, password, age, gender }),
+          body: JSON.stringify({ username, email, password, age, gender }),
         }
       );
       const response = await request.json();
-      console.log(response);
+
       if (!response) {
         throw new Error("request error");
       }
-      if (response.message) {
+
+      if (response.hasOwnProperty("success")) {
+        if (Array.isArray(response.errors)) {
+          response.errors.forEach((item) => {
+            alert(`${item.param} - ${item.msg}`);
+          });
+        }
+      }
+
+      else if (response.message) {
         alert(response.message);
       } else {
         alert("Our congratulations, you are registered!");
@@ -76,8 +85,8 @@ const Registration = () => {
             ]}
           >
             <Input
-              onChange={(e) => dispatch(addUserName(e.target.value))}
-              value={userName}
+              onChange={(e) => dispatch(addUserData({ username: e.target.value }))}
+              value={username}
             />
           </Form.Item>
           <Form.Item
@@ -92,7 +101,7 @@ const Registration = () => {
           >
             <Input
               type="email"
-              onChange={(e) => dispatch(addEmail(e.target.value))}
+              onChange={(e) => dispatch(addUserData({ email: e.target.value }))}
               value={email}
             />
           </Form.Item>
@@ -107,7 +116,7 @@ const Registration = () => {
             ]}
           >
             <Input.Password
-              onChange={(e) => dispatch(addPassword(e.target.value))}
+              onChange={(e) => dispatch(addUserData({ password: e.target.value }))}
               value={password}
             />
           </Form.Item>
@@ -122,7 +131,7 @@ const Registration = () => {
             ]}
           >
             <Radio.Group
-              onChange={(e) => dispatch(addGender(e.target.value))}
+              onChange={(e) => dispatch(addUserData({ gender: e.target.value }))}
               value={gender}
             >
               <Radio value={"male"}>Male</Radio>
@@ -141,7 +150,7 @@ const Registration = () => {
           >
             <Input
               type="number"
-              onChange={(e) => dispatch(addAge(e.target.value))}
+              onChange={(e) => dispatch(addUserData({ age: e.target.value }))}
               value={age}
             />
           </Form.Item>

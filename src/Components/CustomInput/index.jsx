@@ -1,18 +1,13 @@
 import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
-
 import { useSelector, useDispatch } from 'react-redux'
 import { addTitle } from "../../Redux/actions/customInputAction";
 
-
 const CustomInput = ({ fetchData }) => {
-
   const title = useSelector(state => state.customInput);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-
   const onFinish = async (e) => {
-
     try {
       const request = await fetch(
         process.env.REACT_APP_TODO_URL,
@@ -28,12 +23,9 @@ const CustomInput = ({ fetchData }) => {
         }
       );
       const response = await request.json();
-
-
       if (!response) {
         throw new Error("request error");
       }
-
       if (response.hasOwnProperty("success")) {
         if (Array.isArray(response.errors)) {
           response.errors.forEach((item) => {

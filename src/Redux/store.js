@@ -1,5 +1,5 @@
 import { legacy_createStore as createStore, combineReducers } from "redux";
-import { autorizationReducer } from "./reducers/autorizationReducer";
+import { authorizationReducer } from "./reducers/authorizationReducer";
 import { registrationReducer } from "./reducers/registrationReducer";
 import { customInputReducer } from "./reducers/customInputReducer";
 import { todoReducer } from "./reducers/todoReducer";
@@ -8,7 +8,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { taskLoadReducer } from "./reducers/taskLoadReducer";
 
 const rootReducer = combineReducers({
-  autorization: autorizationReducer,
+  authorization: authorizationReducer,
   registration: registrationReducer,
   customInput: customInputReducer,
   todo: todoReducer,
