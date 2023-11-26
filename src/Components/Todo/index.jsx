@@ -6,26 +6,25 @@ import {
   SaveOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { startEdit, endEdit, editTitle } from "../../Redux/actions/todoAction";
+import { useDispatch } from "react-redux";
+import { editStatus, changeTask } from "../../Redux/actions/tasksAction";
 
 const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
-  const title = useSelector((state) => state.todo[item.id] || {});
-  const dispatch = useDispatch();
 
-  const handleEdit = () => {
-    dispatch(endEdit(item.id));
-    editTask(item.id, title.title);
-  };
+  const handleSave = () => {
+    dispatch(editStatus(item.id))
+    editTask(item.id, item.title)
+  }
+  const dispatch = useDispatch();
   return (
     <List.Item style={{ display: "block" }}>
       <Row justify={"center"}>
         <Col span={13}>
-          {title.isEdit ? (
+          {item.isEdit ? (
             <Input
-              onPressEnter={handleEdit}
-              onChange={(e) => dispatch(editTitle(item.id, e.target.value))}
-              value={title.title ? title.title : item.title}
+              onPressEnter={() => handleSave()}
+              onChange={(e) => dispatch(changeTask(item.id, e.target.value))}
+              value={item.title}
             />
           ) : (
             <Checkbox
@@ -34,20 +33,20 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
             >
               {item.isCompleted ? (
                 <span style={{ textDecoration: "line-through" }}>
-                  {title.title ? title.title : item.title}
+                  {item.title}
                 </span>
               ) : (
-                <span>{title.title ? title.title : item.title}</span>
+                <span>{item.title}</span>
               )}
             </Checkbox>
           )}
         </Col>
         <Col>
           <Button>
-            {title.isEdit ? (
-              <SaveOutlined onClick={() => handleEdit()} />
+            {item.isEdit ? (
+              <SaveOutlined onClick={() => handleSave()} />
             ) : (
-              <EditOutlined onClick={() => dispatch(startEdit(item.id))} />
+              <EditOutlined onClick={() => dispatch(editStatus(item.id))} />
             )}
           </Button>
         </Col>

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatusLoad } from "../../Redux/actions/taskLoadAction";
-import { load } from "../../Redux/actions/tasksAction";
+import { load, editReadyStatus, del } from "../../Redux/actions/tasksAction";
 
 const Tasks = () => {
   const tasks = useSelector((state) => state.tasks);
@@ -14,6 +14,7 @@ const Tasks = () => {
   const dispatch = useDispatch();
   const isLoad = useSelector((state) => state.taskLoad);
   const deleteTask = async (id) => {
+    dispatch(del(id))
     try {
       const request = await fetch(process.env.REACT_APP_TODO_URL + `/${id}`, {
         method: "DELETE",
@@ -66,6 +67,7 @@ const Tasks = () => {
     }
   };
   const changeStatus = async (id, isCompleted) => {
+    dispatch(editReadyStatus(id))
     try {
       const request = await fetch(
         process.env.REACT_APP_TODO_URL + `/${id}/isCompleted`,

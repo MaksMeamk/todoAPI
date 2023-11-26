@@ -14,7 +14,9 @@ export const tasksReducer = (state = initialState, action) => {
       return state.map(item => item.id === id ? { ...item, title: newTitle } : item);
     case EDIT_READY_STATUS:
       return state.map(item => item.id === action.payload.id ? { ...item, isCompleted: !item.isCompleted } : item);
-    case EDIT_STATUS: return action.payload
+    case EDIT_STATUS:
+      return state.map(item => item.id === action.payload.id ? { ...item, isEdit: !item.isEdit } : item
+      );
 
     default: return state;
   }

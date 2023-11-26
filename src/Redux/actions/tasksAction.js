@@ -16,7 +16,7 @@ export const del = (id) => {
         payload: { id }
     }
 }
-export const editTask = (id, newTitle) => {
+export const changeTask = (id, newTitle) => {
     return {
         type: EDIT_TASK,
         payload: { id, newTitle }
