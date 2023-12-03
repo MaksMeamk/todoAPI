@@ -1,20 +1,19 @@
-import { legacy_createStore as createStore, combineReducers } from "redux";
-import { authorizationReducer } from "./reducers/authorizationReducer";
-import { registrationReducer } from "./reducers/registrationReducer";
-import { customInputReducer } from "./reducers/customInputReducer";
-import { tasksReducer } from "./reducers/tasksReducer";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { taskLoadReducer } from "./reducers/taskLoadReducer";
+import taskLoadSlice from "./slices/taskLoadSlice";
 import { configureStore } from '@reduxjs/toolkit'
+import authorizationSlice from "./slices/authorizationSlice";
+import registrationSlice from "./slices/registrationSlice";
+import customInputSlice from "./slices/customInputSlice";
+import tasksSlice from "./slices/tasksSlice";
 
-const rootReducer = combineReducers({
-  authorization: authorizationReducer,
-  registration: registrationReducer,
-  customInput: customInputReducer,
-  tasks: tasksReducer,
-  taskLoad: taskLoadReducer,
-});
-
-const store = createStore(rootReducer, composeWithDevTools());
+const store = configureStore({
+  reducer: {
+    authorization: authorizationSlice,
+    registration: registrationSlice,
+    customInput: customInputSlice,
+    tasks: tasksSlice,
+    taskLoad: taskLoadSlice,
+  }
+})
 
 export default store;
+

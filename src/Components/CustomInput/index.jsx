@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
-import { useSelector, useDispatch } from 'react-redux'
-import { addTitle } from "../../Redux/actions/customInputAction";
+import { useState } from "react";
+
 
 const CustomInput = ({ fetchData }) => {
-  const title = useSelector(state => state.customInput);
-  const dispatch = useDispatch();
+  const [title, setTitle] = useState()
+
   const token = localStorage.getItem("token");
   const onFinish = async (e) => {
     try {
@@ -35,7 +35,7 @@ const CustomInput = ({ fetchData }) => {
       } else if (response.message) {
         alert(response.message);
       } else {
-        dispatch(addTitle(''))
+        setTitle('')
         fetchData();
       }
     } catch (error) {
@@ -68,7 +68,7 @@ const CustomInput = ({ fetchData }) => {
         >
           <Row justify="center">
             <Col span={15}>
-              <Input onChange={(e) => dispatch(addTitle(e.target.value))} value={title} />
+              <Input onChange={(e) => setTitle(e.target.value)} value={title} />
             </Col>
             <Col>
               <Button type="primary" htmlType="submit">

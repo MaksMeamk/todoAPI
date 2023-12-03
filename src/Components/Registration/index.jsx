@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Input, Radio, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addUserData } from "../../Redux/actions/registartionAction";
+import { addUserData } from "../../Redux/slices/registrationSlice";
 
 const Registration = () => {
   const navigate = useNavigate();

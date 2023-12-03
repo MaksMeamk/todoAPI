@@ -2,7 +2,8 @@ import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addDataAthorization } from "../../Redux/actions/authorizationAction";
+//import { addDataAthorization } from "../../Redux/actions/authorizationAction";
+import { addDataAthorization } from '../../Redux/slices/authorizationSlice'
 
 const Autorization = () => {
   const navigate = useNavigate();

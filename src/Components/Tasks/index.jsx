@@ -5,8 +5,8 @@ import { Row, Col, List, Button } from "antd";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { changeStatusLoad } from "../../Redux/actions/taskLoadAction";
-import { load, editReadyStatus, del } from "../../Redux/actions/tasksAction";
+import { changeStatusLoad } from "../../Redux/slices/taskLoadSlice";
+import { sort, editReadyStatus, del } from "../../Redux/slices/tasksSlice";
 
 const Tasks = () => {
   const tasks = useSelector((state) => state.tasks);
@@ -116,7 +116,7 @@ const Tasks = () => {
       if (Array.isArray(response)) {
         dispatch(changeStatusLoad);
         dispatch(
-          load([
+          sort([
             ...response.filter((item) => !item.isCompleted),
             ...response.filter((item) => item.isCompleted),
           ]),

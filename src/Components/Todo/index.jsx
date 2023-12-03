@@ -7,7 +7,7 @@ import {
   QuestionCircleOutlined,
 } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
-import { editStatus, changeTask } from "../../Redux/actions/tasksAction";
+import { editStatus, changeTask } from "../../Redux/slices/tasksSlice";
 
 const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
 
@@ -23,7 +23,7 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
           {item.isEdit ? (
             <Input
               onPressEnter={() => handleSave()}
-              onChange={(e) => dispatch(changeTask(item.id, e.target.value))}
+              onChange={(e) => dispatch(changeTask({ id: item.id, title: e.target.value }))}
               value={item.title}
             />
           ) : (
