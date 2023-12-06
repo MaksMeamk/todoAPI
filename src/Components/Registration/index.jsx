@@ -12,7 +12,7 @@ const Registration = () => {
   const onFinish = async () => {
     try {
       const request = await fetch(
-        process.env.REACT_APP_REGISRATION_URL,
+        `${process.env.REACT_APP_URL}/api/users/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

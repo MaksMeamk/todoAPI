@@ -1,16 +1,19 @@
 import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { add } from "../../Redux/slices/tasksSlice";
 
 
-const CustomInput = ({ fetchData }) => {
+const CustomInput = () => {
   const [title, setTitle] = useState()
+  const dispatch = useDispatch()
 
   const token = localStorage.getItem("token");
   const onFinish = async (e) => {
     try {
       const request = await fetch(
-        process.env.REACT_APP_TODO_URL,
+        `${process.env.REACT_APP_URL}/api/todos`,
         {
           method: "POST",
           headers: {
@@ -35,8 +38,8 @@ const CustomInput = ({ fetchData }) => {
       } else if (response.message) {
         alert(response.message);
       } else {
+        dispatch(add(response))
         setTitle('')
-        fetchData();
       }
     } catch (error) {
       alert(error);

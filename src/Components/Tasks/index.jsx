@@ -6,30 +6,32 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatusLoad } from "../../Redux/slices/taskLoadSlice";
-import { sort, editReadyStatus, del } from "../../Redux/slices/tasksSlice";
+import { sort, editReadyStatus, del, load } from "../../Redux/slices/tasksSlice";
 
 const Tasks = () => {
   const tasks = useSelector((state) => state.tasks);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoad = useSelector((state) => state.taskLoad);
+  const isLoad = useSelector((state) => state.taskLoad.load);
+
   const deleteTask = async (id) => {
-    dispatch(del(id))
     try {
-      const request = await fetch(process.env.REACT_APP_TODO_URL + `/${id}`, {
+      const request = await fetch(`${process.env.REACT_APP_URL}/api/todos/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       const response = await request.json();
+
       if (!response) {
         throw new Error("request error");
       }
       if (response.message) {
         alert(response.message);
       } else {
-        fetchData();
+        dispatch(del(response));
+
       }
     } catch (error) {
       alert(error);
@@ -37,7 +39,7 @@ const Tasks = () => {
   };
   const editTask = async (id, title) => {
     try {
-      const request = await fetch(process.env.REACT_APP_TODO_URL + `/${id}`, {
+      const request = await fetch(`${process.env.REACT_APP_URL}/api/todos/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -59,9 +61,9 @@ const Tasks = () => {
         }
       } else if (response.message) {
         alert(response.message);
-      } else {
-        fetchData();
       }
+
+
     } catch (error) {
       alert(error);
     }
@@ -70,7 +72,7 @@ const Tasks = () => {
     dispatch(editReadyStatus(id))
     try {
       const request = await fetch(
-        process.env.REACT_APP_TODO_URL + `/${id}/isCompleted`,
+        `${process.env.REACT_APP_URL}/api/todos/${id}/isCompleted`,
         {
           method: "PATCH",
           headers: {
@@ -90,7 +92,7 @@ const Tasks = () => {
       if (response.message) {
         alert(response.message);
       } else {
-        fetchData();
+        dispatch(sort());
       }
     } catch (error) {
       alert(error);
@@ -98,9 +100,9 @@ const Tasks = () => {
   };
   const token = localStorage.getItem("token");
   async function fetchData() {
-    dispatch(changeStatusLoad);
+    dispatch(changeStatusLoad());
     try {
-      const request = await fetch(process.env.REACT_APP_TODO_URL, {
+      const request = await fetch(`${process.env.REACT_APP_URL}/api/todos`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -114,14 +116,9 @@ const Tasks = () => {
         alert(response.message);
       }
       if (Array.isArray(response)) {
-        dispatch(changeStatusLoad);
-        dispatch(
-          sort([
-            ...response.filter((item) => !item.isCompleted),
-            ...response.filter((item) => item.isCompleted),
-          ]),
-        );
-        //console.log(response);
+        dispatch(changeStatusLoad());
+        dispatch(load(response));
+        dispatch(sort());
       }
     } catch (error) {
       alert(error);
@@ -130,6 +127,7 @@ const Tasks = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   const logOut = () => {
     navigate("/");
     localStorage.clear();
@@ -157,7 +155,7 @@ const Tasks = () => {
       </Row>
       <Row justify="center">
         <Col span={15}>
-          <CustomInput fetchData={fetchData} />
+          <CustomInput />
         </Col>
       </Row>
       <Row justify="center">

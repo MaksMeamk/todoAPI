@@ -7,9 +7,7 @@ const authorizationSlice = createSlice({
     initialState,
     reducers: {
         addDataAthorization: (state, action) => {
-            const [key] = Object.keys(action.payload)
-            const [value] = Object.values(action.payload)
-            state[key] = value;
+            Object.assign(state, action.payload)
         },
     },
 });

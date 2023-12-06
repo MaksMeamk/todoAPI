@@ -10,12 +10,14 @@ import { useDispatch } from "react-redux";
 import { editStatus, changeTask } from "../../Redux/slices/tasksSlice";
 
 const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
+  const dispatch = useDispatch();
 
   const handleSave = () => {
     dispatch(editStatus(item.id))
     editTask(item.id, item.title)
+
   }
-  const dispatch = useDispatch();
+
   return (
     <List.Item style={{ display: "block" }}>
       <Row justify={"center"}>

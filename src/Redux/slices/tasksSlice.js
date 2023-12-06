@@ -4,12 +4,17 @@ const tasksSlice = createSlice({
     name: 'tasks',
     initialState: [],
     reducers: {
-        sort: (state, action) => {
-            state.length = 0;
+        load: (state, action) => {
             state.push(...action.payload)
         },
+        sort: (state) => {
+            state.sort((a, b) => a.isCompleted - b.isCompleted)
+        },
+        add: (state, action) => {
+            state.push(action.payload)
+        },
         del: (state, action) => {
-            state.splice(state.findIndex(item => item.id === action.payload, 1))
+            state.splice(state.findIndex(item => item.id === action.payload.id), 1)
         },
         changeTask: (state, action) => {
             const index = state.findIndex(item => item.id === action.payload.id);
@@ -27,5 +32,5 @@ const tasksSlice = createSlice({
     },
 });
 
-export const { sort, del, changeTask, editReadyStatus, editStatus } = tasksSlice.actions;
+export const { sort, del, changeTask, editReadyStatus, editStatus, add, load } = tasksSlice.actions;
 export default tasksSlice.reducer;

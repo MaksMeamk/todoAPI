@@ -4,10 +4,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const taskLoadSlice = createSlice({
     name: 'taskLoad',
-    initialState: false,
+    initialState: {},
     reducers: {
         changeStatusLoad: (state) => {
-            state = !state;
+            state.load = !state.load;
         },
     },
 });
