@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatusLoad } from "../../Redux/slices/taskLoadSlice";
 import { sort, editReadyStatus, del, load } from "../../Redux/slices/tasksSlice";
+import axios from "axios";
+import { fetchLoadTasks } from "../../Requests/requests";
 
 const Tasks = () => {
   const tasks = useSelector((state) => state.tasks);
@@ -71,6 +73,7 @@ const Tasks = () => {
   const changeStatus = async (id, isCompleted) => {
     dispatch(editReadyStatus(id))
     try {
+
       const request = await fetch(
         `${process.env.REACT_APP_URL}/api/todos/${id}/isCompleted`,
         {
@@ -99,33 +102,34 @@ const Tasks = () => {
     }
   };
   const token = localStorage.getItem("token");
-  async function fetchData() {
-    dispatch(changeStatusLoad());
-    try {
-      const request = await fetch(`${process.env.REACT_APP_URL}/api/todos`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const response = await request.json();
-      if (!response) {
-        throw new Error("request error");
-      }
-      if (response.message) {
-        alert(response.message);
-      }
-      if (Array.isArray(response)) {
-        dispatch(changeStatusLoad());
-        dispatch(load(response));
-        dispatch(sort());
-      }
-    } catch (error) {
-      alert(error);
-    }
-  }
+
+  // async function fetchData() {
+  //   dispatch(changeStatusLoad());
+  //   try {
+  //     const response = await axios.get(`${process.env.REACT_APP_URL}/api/todos`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       }
+  //     })
+
+  //     console.log(response);
+  //     if (!response) {
+  //       throw new Error("request error");
+  //     }
+  //     if (response.message) {
+  //       alert(response.message);
+  //     }
+  //     if (Array.isArray(response)) {
+  //       dispatch(changeStatusLoad());
+  //       dispatch(load(response));
+  //       dispatch(sort());
+  //     }
+  //   } catch (error) {
+  //     alert(error);
+  //   }
+  // }
   useEffect(() => {
-    fetchData();
+    fetchLoadTasks(dispatch);
   }, []);
 
   const logOut = () => {

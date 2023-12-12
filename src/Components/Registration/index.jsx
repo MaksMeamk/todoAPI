@@ -3,46 +3,17 @@ import { Button, Form, Input, Radio, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { addUserData } from "../../Redux/slices/registrationSlice";
+import { fetchRegistration } from "../../Requests/requests";
 
 const Registration = () => {
   const navigate = useNavigate();
   const { username, email, password, age, gender } = useSelector(state => state.registration)
   const dispatch = useDispatch();
 
-  const onFinish = async () => {
-    try {
-      const request = await fetch(
-        `${process.env.REACT_APP_URL}/api/users/register`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password, age, gender }),
-        }
-      );
-      const response = await request.json();
-
-      if (!response) {
-        throw new Error("request error");
-      }
-
-      if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors)) {
-          response.errors.forEach((item) => {
-            alert(`${item.param} - ${item.msg}`);
-          });
-        }
-      }
-
-      else if (response.message) {
-        alert(response.message);
-      } else {
-        alert("Our congratulations, you are registered!");
-        navigate("*");
-      }
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+  const onFinish = () => {
+    fetchRegistration({ username, email, password, age, gender });
+    navigate("*");
+  }
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
