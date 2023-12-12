@@ -23,7 +23,7 @@ const Tasks = () => {
       dispatch(sort());
       dispatch(changeStatusLoad());
     });
-  }, [dispatch]);
+  }, []);
 
   const logOut = () => {
     navigate("/");

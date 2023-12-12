@@ -3,48 +3,18 @@ import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { add } from "../../Redux/slices/tasksSlice";
+import { fetchAddTodo } from "../../Requests/requests";
 
 
 const CustomInput = () => {
   const [title, setTitle] = useState()
   const dispatch = useDispatch()
+  const onFinish = async () => {
+    const response = await fetchAddTodo(title)
+    dispatch(add(response.data))
+    setTitle('')
+  }
 
-  const token = localStorage.getItem("token");
-  const onFinish = async (e) => {
-    try {
-      const request = await fetch(
-        `${process.env.REACT_APP_URL}/api/todos`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            title,
-          }),
-        }
-      );
-      const response = await request.json();
-      if (!response) {
-        throw new Error("request error");
-      }
-      if (response.hasOwnProperty("success")) {
-        if (Array.isArray(response.errors)) {
-          response.errors.forEach((item) => {
-            alert(`${item.param} - ${item.msg}`);
-          });
-        }
-      } else if (response.message) {
-        alert(response.message);
-      } else {
-        dispatch(add(response))
-        setTitle('')
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };

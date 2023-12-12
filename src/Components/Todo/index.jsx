@@ -28,7 +28,7 @@ const ToDo = ({ item }) => {
 
   const changeStatus = async (id, isCompleted) => {
     await fetchEditStatusTodo(id, isCompleted);
-    dispatch(editReadyStatus());
+    dispatch(editReadyStatus(id));
     dispatch(sort());
   };
 
