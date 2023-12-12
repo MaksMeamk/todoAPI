@@ -22,7 +22,6 @@ const handlingError = (error) => {
 export const fetchAddTodo = async (title) => {
     try {
         const response = await instance.post(`/api/todos`, { title });
-        console.log(response);
         return response
     } catch (error) {
         handlingError(error);

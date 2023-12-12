@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { add } from "../../Redux/slices/tasksSlice";
+import { add, sort } from "../../Redux/slices/tasksSlice";
 import { fetchAddTodo } from "../../Requests/requests";
 
 
@@ -12,6 +12,7 @@ const CustomInput = () => {
   const onFinish = async () => {
     const response = await fetchAddTodo(title)
     dispatch(add(response.data))
+    dispatch(sort())
     setTitle('')
   }
 
