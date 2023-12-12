@@ -1,19 +1,22 @@
 import React from "react";
 import { Button, Form, Input, Radio, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import { addUserData } from "../../Redux/slices/registrationSlice";
 import { fetchRegistration } from "../../Requests/requests";
 
 const Registration = () => {
   const navigate = useNavigate();
-  const { username, email, password, age, gender } = useSelector(state => state.registration)
+  const { username, email, password, age, gender } = useSelector(
+    (state) => state.registration,
+  );
   const dispatch = useDispatch();
 
   const onFinish = () => {
-    fetchRegistration({ username, email, password, age, gender });
-    navigate("*");
-  }
+    fetchRegistration({ username, email, password, age, gender }).then(() =>
+      navigate("*"),
+    );
+  };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -56,7 +59,9 @@ const Registration = () => {
             ]}
           >
             <Input
-              onChange={(e) => dispatch(addUserData({ username: e.target.value }))}
+              onChange={(e) =>
+                dispatch(addUserData({ username: e.target.value }))
+              }
               value={username}
             />
           </Form.Item>
@@ -87,7 +92,9 @@ const Registration = () => {
             ]}
           >
             <Input.Password
-              onChange={(e) => dispatch(addUserData({ password: e.target.value }))}
+              onChange={(e) =>
+                dispatch(addUserData({ password: e.target.value }))
+              }
               value={password}
             />
           </Form.Item>
@@ -102,7 +109,9 @@ const Registration = () => {
             ]}
           >
             <Radio.Group
-              onChange={(e) => dispatch(addUserData({ gender: e.target.value }))}
+              onChange={(e) =>
+                dispatch(addUserData({ gender: e.target.value }))
+              }
               value={gender}
             >
               <Radio value={"male"}>Male</Radio>

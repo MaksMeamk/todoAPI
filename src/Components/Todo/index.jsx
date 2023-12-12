@@ -6,17 +6,31 @@ import {
   SaveOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
 import { editStatus, changeTask } from "../../Redux/slices/tasksSlice";
+import { useDispatch } from "react-redux";
+import { editReadyStatus, del, sort } from "../../Redux/slices/tasksSlice";
+import {
+  fetchDeleteTodo,
+  fetchEditTodo,
+  fetchEditStatusTodo,
+} from "../../Requests/requests";
 
-const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
+const ToDo = ({ item }) => {
   const dispatch = useDispatch();
 
-  const handleSave = () => {
-    dispatch(editStatus(item.id))
-    editTask(item.id, item.title)
+  const deleteTodo = (id) =>
+    fetchDeleteTodo(id).then((response) => dispatch(del(response.data)));
 
-  }
+  const handleSave = async (id, title) => {
+    await fetchEditTodo(id, title);
+    dispatch(editStatus(id));
+  };
+
+  const changeStatus = async (id, isCompleted) => {
+    await fetchEditStatusTodo(id, isCompleted);
+    dispatch(editReadyStatus());
+    dispatch(sort());
+  };
 
   return (
     <List.Item style={{ display: "block" }}>
@@ -24,8 +38,10 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
         <Col span={13}>
           {item.isEdit ? (
             <Input
-              onPressEnter={() => handleSave()}
-              onChange={(e) => dispatch(changeTask({ id: item.id, title: e.target.value }))}
+              onPressEnter={() => handleSave(item.id, item.title)}
+              onChange={(e) =>
+                dispatch(changeTask({ id: item.id, title: e.target.value }))
+              }
               value={item.title}
             />
           ) : (
@@ -46,7 +62,7 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
         <Col>
           <Button>
             {item.isEdit ? (
-              <SaveOutlined onClick={() => handleSave()} />
+              <SaveOutlined onClick={() => handleSave(item.id, item.title)} />
             ) : (
               <EditOutlined onClick={() => dispatch(editStatus(item.id))} />
             )}
@@ -56,7 +72,7 @@ const ToDo = ({ item, deleteTask, editTask, changeStatus }) => {
           <Popconfirm
             title="Delete the task"
             description="Are you sure to delete this task?"
-            onConfirm={() => deleteTask(item.id)}
+            onConfirm={() => deleteTodo(item.id)}
             icon={
               <QuestionCircleOutlined
                 style={{
