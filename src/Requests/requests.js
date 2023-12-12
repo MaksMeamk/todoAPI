@@ -18,6 +18,8 @@ const handlingError = (error) => {
             alert(error.response.data.message);
         }
     }
+    console.log(error);
+
 };
 export const fetchAddTodo = async (title) => {
     try {
@@ -77,10 +79,11 @@ export const fetchAuthorization = async (data) => {
 };
 export const fetchRegistration = async (data) => {
     try {
-        await axios.post(
+        const response = await axios.post(
             `${process.env.REACT_APP_URL}/api/users/register`,
             data,
         );
+        console.log(response);
         alert("Our congratulations, you are registered!");
     } catch (error) {
         handlingError(error);
