@@ -19,9 +19,11 @@ const Tasks = () => {
   useEffect(() => {
     dispatch(changeStatusLoad());
     fetchLoadTasks().then((response) => {
-      dispatch(load(response.data));
-      dispatch(sort());
-      dispatch(changeStatusLoad());
+      if (response) {
+        dispatch(load(response.data));
+        dispatch(sort());
+        dispatch(changeStatusLoad());
+      }
     });
   }, []);
 

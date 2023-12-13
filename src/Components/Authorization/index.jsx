@@ -10,7 +10,11 @@ const Autorization = () => {
   const dispatch = useDispatch();
   const { email, password } = useSelector((state) => state.authorization);
   const onFinish = () => {
-    fetchAuthorization({ email, password }).then(() => navigate("/tasks"));
+    fetchAuthorization({ email, password }).then((response) => {
+      if (response) {
+        navigate("/tasks")
+      }
+    });
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -46,12 +50,12 @@ const Autorization = () => {
           <Form.Item
             label="Email"
             name="email"
-            // rules={[
-            //   {
-            //     required: true,
-            //     message: "Please input your email!",
-            //   },
-            // ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: "Please input your email!",
+          //   },
+          // ]}
           >
             <Input
               type="email"
@@ -64,12 +68,12 @@ const Autorization = () => {
           <Form.Item
             label="Password"
             name="password"
-            // rules={[
-            //   {
-            //     required: true,
-            //     message: "Please input your password!",
-            //   },
-            // ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: "Please input your password!",
+          //   },
+          // ]}
           >
             <Input.Password
               onChange={(e) =>

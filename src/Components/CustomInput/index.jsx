@@ -11,9 +11,11 @@ const CustomInput = () => {
   const dispatch = useDispatch()
   const onFinish = async () => {
     const response = await fetchAddTodo(title)
-    dispatch(add(response.data))
-    dispatch(sort())
-    setTitle('')
+    if (response) {
+      dispatch(add(response.data))
+      dispatch(sort())
+      setTitle('')
+    }
   }
 
   const onFinishFailed = (errorInfo) => {

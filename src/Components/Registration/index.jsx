@@ -13,8 +13,13 @@ const Registration = () => {
   const dispatch = useDispatch();
 
   const onFinish = () => {
-    fetchRegistration({ username, email, password, age, gender }).then(() =>
-      navigate("*"),
+    fetchRegistration({ username, email, password, age, gender }).then((response) => {
+      if (response) {
+        console.log(response);
+        navigate("*")
+      }
+    }
+
     );
   };
   const onFinishFailed = (errorInfo) => {

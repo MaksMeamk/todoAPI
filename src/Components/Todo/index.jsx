@@ -19,17 +19,25 @@ const ToDo = ({ item }) => {
   const dispatch = useDispatch();
 
   const deleteTodo = (id) =>
-    fetchDeleteTodo(id).then((response) => dispatch(del(response.data)));
+    fetchDeleteTodo(id).then((response) => {
+      if (response) {
+        dispatch(del(response.data))
+      }
+    });
 
   const handleSave = async (id, title) => {
-    await fetchEditTodo(id, title);
-    dispatch(editStatus(id));
+    const response = await fetchEditTodo(id, title);
+    if (response) {
+      dispatch(editStatus(id))
+    };
   };
 
   const changeStatus = async (id, isCompleted) => {
-    await fetchEditStatusTodo(id, isCompleted);
-    dispatch(editReadyStatus(id));
-    dispatch(sort());
+    const response = await fetchEditStatusTodo(id, isCompleted);
+    if (response) {
+      dispatch(editReadyStatus(id));
+      dispatch(sort());
+    }
   };
 
   return (

@@ -20,6 +20,8 @@ const handlingError = (error) => {
     }
     console.log(error);
 
+
+
 };
 export const fetchAddTodo = async (title) => {
     try {
@@ -32,9 +34,10 @@ export const fetchAddTodo = async (title) => {
 
 export const fetchEditStatusTodo = async (id, isCompleted) => {
     try {
-        await instance.patch(`/api/todos/${id}/isCompleted`, {
+        const response = await instance.patch(`/api/todos/${id}/isCompleted`, {
             isCompleted: !isCompleted,
         });
+        return response;
     } catch (error) {
         handlingError(error);
     }
@@ -42,7 +45,8 @@ export const fetchEditStatusTodo = async (id, isCompleted) => {
 
 export const fetchEditTodo = async (id, title) => {
     try {
-        await instance.patch(`/api/todos/${id}`, { title });
+        const response = await instance.patch(`/api/todos/${id}`, { title });
+        return response;
     } catch (error) {
         handlingError(error);
     }
@@ -73,6 +77,7 @@ export const fetchAuthorization = async (data) => {
             data,
         );
         localStorage.setItem("token", response.data.token);
+        return response;
     } catch (error) {
         handlingError(error);
     }
@@ -83,8 +88,8 @@ export const fetchRegistration = async (data) => {
             `${process.env.REACT_APP_URL}/api/users/register`,
             data,
         );
-        console.log(response);
         alert("Our congratulations, you are registered!");
+        return response;
     } catch (error) {
         handlingError(error);
     }
