@@ -3,18 +3,15 @@ import { Button, Form, Input, Row, Col } from "antd";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { addDataAthorization } from "../../Redux/slices/authorizationSlice";
-import { fetchAuthorization } from "../../Requests/requests";
+import { fetchAuthorization } from "../../Requests/index";
 
 const Autorization = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { email, password } = useSelector((state) => state.authorization);
+  const { email, password } = useSelector((state) => state.authorization.data);
   const onFinish = () => {
-    fetchAuthorization({ email, password }).then((response) => {
-      if (response) {
-        navigate("/tasks")
-      }
-    });
+    dispatch(fetchAuthorization({ email, password }));
+    navigate("/tasks");
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);

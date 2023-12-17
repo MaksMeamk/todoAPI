@@ -13,31 +13,20 @@ import {
   fetchDeleteTodo,
   fetchEditTodo,
   fetchEditStatusTodo,
-} from "../../Requests/requests";
+} from "../../Requests/index";
 
 const ToDo = ({ item }) => {
   const dispatch = useDispatch();
 
-  const deleteTodo = (id) =>
-    fetchDeleteTodo(id).then((response) => {
-      if (response) {
-        dispatch(del(response.data))
-      }
-    });
+  const deleteTodo = (id) => dispatch(fetchDeleteTodo(id))
 
-  const handleSave = async (id, title) => {
-    const response = await fetchEditTodo(id, title);
-    if (response) {
-      dispatch(editStatus(id))
-    };
+  const handleSave = (id, title) => {
+    dispatch(fetchEditTodo(id, title));
+    dispatch(editStatus(id))
   };
 
-  const changeStatus = async (id, isCompleted) => {
-    const response = await fetchEditStatusTodo(id, isCompleted);
-    if (response) {
-      dispatch(editReadyStatus(id));
-      dispatch(sort());
-    }
+  const changeStatus = (id, isCompleted) => {
+    dispatch(fetchEditStatusTodo(id, isCompleted))
   };
 
   return (

@@ -9,7 +9,6 @@ const store = configureStore({
   reducer: {
     authorization: authorizationSlice,
     registration: registrationSlice,
-    customInput: customInputSlice,
     tasks: tasksSlice,
     taskLoad: taskLoadSlice,
   }

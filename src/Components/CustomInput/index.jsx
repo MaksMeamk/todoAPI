@@ -3,19 +3,15 @@ import { Button, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { add, sort } from "../../Redux/slices/tasksSlice";
-import { fetchAddTodo } from "../../Requests/requests";
+import { fetchAddTodo } from "../../Requests/index";
 
 
 const CustomInput = () => {
   const [title, setTitle] = useState()
   const dispatch = useDispatch()
-  const onFinish = async () => {
-    const response = await fetchAddTodo(title)
-    if (response) {
-      dispatch(add(response.data))
-      dispatch(sort())
-      setTitle('')
-    }
+  const onFinish = () => {
+    dispatch(fetchAddTodo(title))
+    setTitle('')
   }
 
   const onFinishFailed = (errorInfo) => {

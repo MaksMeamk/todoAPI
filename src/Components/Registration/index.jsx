@@ -3,7 +3,7 @@ import { Button, Form, Input, Radio, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserData } from "../../Redux/slices/registrationSlice";
-import { fetchRegistration } from "../../Requests/requests";
+import { fetchRegistration } from "../../Requests/index";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -13,14 +13,8 @@ const Registration = () => {
   const dispatch = useDispatch();
 
   const onFinish = () => {
-    fetchRegistration({ username, email, password, age, gender }).then((response) => {
-      if (response) {
-        console.log(response);
-        navigate("*")
-      }
-    }
-
-    );
+    dispatch(fetchRegistration({ username, email, password, age, gender }))
+    navigate("*");
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);

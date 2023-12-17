@@ -6,25 +6,18 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatusLoad } from "../../Redux/slices/taskLoadSlice";
-import { sort, load } from "../../Redux/slices/tasksSlice";
-
-import { fetchLoadTasks } from "../../Requests/requests";
+import { fetchLoadTasks } from "../../Requests/index";
 
 const Tasks = () => {
-  const tasks = useSelector((state) => state.tasks);
+  const tasks = useSelector((state) => state.tasks.data);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoad = useSelector((state) => state.taskLoad.load);
 
   useEffect(() => {
     dispatch(changeStatusLoad());
-    fetchLoadTasks().then((response) => {
-      if (response) {
-        dispatch(load(response.data));
-        dispatch(sort());
-        dispatch(changeStatusLoad());
-      }
-    });
+    dispatch(fetchLoadTasks())
+    dispatch(changeStatusLoad())
   }, []);
 
   const logOut = () => {
