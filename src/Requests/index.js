@@ -90,10 +90,12 @@ const postRegistration = async (data) => {
         `${process.env.REACT_APP_URL}/api/users/register`,
         data,
     );
+    console.log('postRegistration', response);
     alert("Our congratulations, you are registered!");
     return response;
 };
 export const fetchRegistration = createAsyncThunk('tasks/fetchRegistration', async (data) => {
     const response = await postRegistration(data)
+
     return response
 })

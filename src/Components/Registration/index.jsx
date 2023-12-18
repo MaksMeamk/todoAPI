@@ -2,18 +2,20 @@ import React from "react";
 import { Button, Form, Input, Radio, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { addUserData } from "../../Redux/slices/registrationSlice";
+import { useState } from "react";
 import { fetchRegistration } from "../../Requests/index";
 
 const Registration = () => {
   const navigate = useNavigate();
+
   const { username, email, password, age, gender } = useSelector(
-    (state) => state.registration,
+    (state) => state.registration.data,
   );
+  const [data, setData] = useState({ username, email, password, age, gender })
   const dispatch = useDispatch();
 
   const onFinish = () => {
-    dispatch(fetchRegistration({ username, email, password, age, gender }))
+    dispatch(fetchRegistration(data))
     navigate("*");
   };
   const onFinishFailed = (errorInfo) => {
@@ -58,9 +60,7 @@ const Registration = () => {
             ]}
           >
             <Input
-              onChange={(e) =>
-                dispatch(addUserData({ username: e.target.value }))
-              }
+              onChange={(e) => setData((data) => ({ ...data, username: e.target.value }))}
               value={username}
             />
           </Form.Item>
@@ -76,7 +76,7 @@ const Registration = () => {
           >
             <Input
               type="email"
-              onChange={(e) => dispatch(addUserData({ email: e.target.value }))}
+              onChange={(e) => setData((data) => ({ ...data, email: e.target.value }))}
               value={email}
             />
           </Form.Item>
@@ -91,9 +91,7 @@ const Registration = () => {
             ]}
           >
             <Input.Password
-              onChange={(e) =>
-                dispatch(addUserData({ password: e.target.value }))
-              }
+              onChange={(e) => setData((data) => ({ ...data, password: e.target.value }))}
               value={password}
             />
           </Form.Item>
@@ -108,9 +106,7 @@ const Registration = () => {
             ]}
           >
             <Radio.Group
-              onChange={(e) =>
-                dispatch(addUserData({ gender: e.target.value }))
-              }
+              onChange={(e) => setData((data) => ({ ...data, gender: e.target.value }))}
               value={gender}
             >
               <Radio value={"male"}>Male</Radio>
@@ -129,7 +125,7 @@ const Registration = () => {
           >
             <Input
               type="number"
-              onChange={(e) => dispatch(addUserData({ age: e.target.value }))}
+              onChange={(e) => setData((data) => ({ ...data, age: e.target.value }))}
               value={age}
             />
           </Form.Item>

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchRegistration } from '../../Requests';
+import { fetchRegistration, handlingError } from '../../Requests';
 
 
 const registrationSlice = createSlice({
@@ -9,11 +9,6 @@ const registrationSlice = createSlice({
         error: null,
         data: { username: '', email: '', password: '', age: '', gender: '' }
     },
-    // reducers: {
-    //     addUserData: (state, action) => {
-    //         Object.assign(state, action.payload)
-    //     },
-    // },
     extraReducers: {
         [fetchRegistration.pedding]: (state) => {
             state.status = 'loading';

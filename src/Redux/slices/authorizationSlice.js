@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAuthorization } from '../../Requests';
+import { fetchAuthorization, handlingError } from '../../Requests';
 
 
 
@@ -11,11 +11,7 @@ const authorizationSlice = createSlice({
         data: { email: '', password: '' }
     },
 
-    // reducers: {
-    //     addDataAthorization: (state, action) => {
-    //         Object.assign(state, action.payload)
-    //     },
-    // },
+
     extraReducers: {
         [fetchAuthorization.pedding]: (state) => {
             state.status = 'loading';

@@ -2,15 +2,17 @@ import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { addDataAthorization } from "../../Redux/slices/authorizationSlice";
+
 import { fetchAuthorization } from "../../Requests/index";
+import { useState } from "react";
 
 const Autorization = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { email, password } = useSelector((state) => state.authorization.data);
+  const [data, setData] = useState({ email, password })
   const onFinish = () => {
-    dispatch(fetchAuthorization({ email, password }));
+    dispatch(fetchAuthorization(data));
     navigate("/tasks");
   };
   const onFinishFailed = (errorInfo) => {
@@ -47,17 +49,16 @@ const Autorization = () => {
           <Form.Item
             label="Email"
             name="email"
-          // rules={[
-          //   {
-          //     required: true,
-          //     message: "Please input your email!",
-          //   },
-          // ]}
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+            ]}
           >
             <Input
               type="email"
-              onChange={(e) =>
-                dispatch(addDataAthorization({ email: e.target.value }))
+              onChange={(e) => setData((data) => ({ ...data, email: e.target.value }))
               }
               value={email}
             />
@@ -65,16 +66,15 @@ const Autorization = () => {
           <Form.Item
             label="Password"
             name="password"
-          // rules={[
-          //   {
-          //     required: true,
-          //     message: "Please input your password!",
-          //   },
-          // ]}
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
           >
             <Input.Password
-              onChange={(e) =>
-                dispatch(addDataAthorization({ password: e.target.value }))
+              onChange={(e) => setData((data) => ({ ...data, password: e.target.value }))
               }
               value={password}
             />

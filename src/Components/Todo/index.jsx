@@ -8,7 +8,6 @@ import {
 } from "@ant-design/icons";
 import { editStatus, changeTask } from "../../Redux/slices/tasksSlice";
 import { useDispatch } from "react-redux";
-import { editReadyStatus, del, sort } from "../../Redux/slices/tasksSlice";
 import {
   fetchDeleteTodo,
   fetchEditTodo,
@@ -17,18 +16,14 @@ import {
 
 const ToDo = ({ item }) => {
   const dispatch = useDispatch();
-
   const deleteTodo = (id) => dispatch(fetchDeleteTodo(id))
-
   const handleSave = (id, title) => {
     dispatch(fetchEditTodo(id, title));
     dispatch(editStatus(id))
   };
-
   const changeStatus = (id, isCompleted) => {
     dispatch(fetchEditStatusTodo(id, isCompleted))
   };
-
   return (
     <List.Item style={{ display: "block" }}>
       <Row justify={"center"}>
