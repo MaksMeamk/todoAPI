@@ -13,7 +13,7 @@ const Autorization = () => {
   const [data, setData] = useState({ email, password })
   const onFinish = () => {
     dispatch(fetchAuthorization(data));
-    navigate("/tasks");
+    //navigate("/tasks");
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);

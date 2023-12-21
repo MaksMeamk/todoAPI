@@ -10,7 +10,7 @@ const registrationSlice = createSlice({
         data: { username: '', email: '', password: '', age: '', gender: '' }
     },
     extraReducers: {
-        [fetchRegistration.pedding]: (state) => {
+        [fetchRegistration.pending]: (state) => {
             state.status = 'loading';
         },
         [fetchRegistration.fulfilled]: (state, action) => {
@@ -19,8 +19,8 @@ const registrationSlice = createSlice({
         },
         [fetchRegistration.rejected]: (state, action) => {
             state.status = 'failed';
-            state.error = action;
-            handlingError(state.error)
+            state.error = action.error;
+            console.log("fetchRegistration.rejected", action);
         }
     }
 });

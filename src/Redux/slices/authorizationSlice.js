@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAuthorization, handlingError } from '../../Requests';
-
-
+import { fetchAuthorization, } from '../../Requests';
+import { useNavigate, Link } from "react-router-dom";
 
 const authorizationSlice = createSlice({
     name: 'authorization',
@@ -11,20 +10,21 @@ const authorizationSlice = createSlice({
         data: { email: '', password: '' }
     },
 
-
     extraReducers: {
-        [fetchAuthorization.pedding]: (state) => {
+        [fetchAuthorization.pending]: (state) => {
             state.status = 'loading';
         },
         [fetchAuthorization.fulfilled]: (state, action) => {
+            const navigate = useNavigate();
             state.status = 'succeeded';
             Object.assign(state.data, action.payload.data)
+            navigate("/tasks");
 
         },
         [fetchAuthorization.rejected]: (state, action) => {
             state.status = 'failed';
-            state.error = action;
-            handlingError(state.error)
+            state.error = action.error;
+            console.log("fetchAuthorization.rejected", action);
         }
     }
 });
