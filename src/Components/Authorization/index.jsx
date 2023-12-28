@@ -1,19 +1,21 @@
 import React from "react";
 import { Button, Form, Input, Row, Col } from "antd";
 import { useNavigate, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-
 import { fetchAuthorization } from "../../Requests/index";
 import { useState } from "react";
 
 const Autorization = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { email, password } = useSelector((state) => state.authorization.data);
-  const [data, setData] = useState({ email, password })
-  const onFinish = () => {
-    dispatch(fetchAuthorization(data));
-    //navigate("/tasks");
+  const [data, setData] = useState({ email: '', password: '' })
+  const onFinish = async () => {
+    try {
+      await fetchAuthorization(data)
+      navigate("/tasks");
+    }
+    catch (error) {
+      onFinishFailed(error.message)
+    }
+
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -60,7 +62,7 @@ const Autorization = () => {
               type="email"
               onChange={(e) => setData((data) => ({ ...data, email: e.target.value }))
               }
-              value={email}
+              value={data.email}
             />
           </Form.Item>
           <Form.Item
@@ -76,7 +78,7 @@ const Autorization = () => {
             <Input.Password
               onChange={(e) => setData((data) => ({ ...data, password: e.target.value }))
               }
-              value={password}
+              value={data.password}
             />
           </Form.Item>
 

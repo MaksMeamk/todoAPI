@@ -6,35 +6,34 @@ import {
   SaveOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import { editStatus, changeTask } from "../../Redux/slices/tasksSlice";
 import { useDispatch } from "react-redux";
 import {
   fetchDeleteTodo,
   fetchEditTodo,
   fetchEditStatusTodo,
 } from "../../Requests/index";
+import { useState } from "react";
 
 const ToDo = ({ item }) => {
   const dispatch = useDispatch();
   const deleteTodo = (id) => dispatch(fetchDeleteTodo(id))
   const handleSave = (id, title) => {
-    dispatch(fetchEditTodo(id, title));
-    dispatch(editStatus(id))
+    dispatch(fetchEditTodo({ id, title }));
+    setDataEdit(dataEdit => ({ ...dataEdit, isEdit: !dataEdit.isEdit }))
   };
   const changeStatus = (id, isCompleted) => {
-    dispatch(fetchEditStatusTodo(id, isCompleted))
+    dispatch(fetchEditStatusTodo({ id, isCompleted }))
   };
+  const [dataEdit, setDataEdit] = useState({ title: item.title, isEdit: false })
   return (
     <List.Item style={{ display: "block" }}>
       <Row justify={"center"}>
         <Col span={13}>
-          {item.isEdit ? (
+          {dataEdit.isEdit ? (
             <Input
-              onPressEnter={() => handleSave(item.id, item.title)}
-              onChange={(e) =>
-                dispatch(changeTask({ id: item.id, title: e.target.value }))
-              }
-              value={item.title}
+              onPressEnter={() => handleSave(item.id, dataEdit.title)}
+              onChange={(e) => setDataEdit(dataEdit => ({ ...dataEdit, title: e.target.value }))}
+              value={dataEdit.title}
             />
           ) : (
             <Checkbox
@@ -53,10 +52,10 @@ const ToDo = ({ item }) => {
         </Col>
         <Col>
           <Button>
-            {item.isEdit ? (
-              <SaveOutlined onClick={() => handleSave(item.id, item.title)} />
+            {dataEdit.isEdit ? (
+              <SaveOutlined onClick={() => handleSave(item.id, dataEdit.title)} />
             ) : (
-              <EditOutlined onClick={() => dispatch(editStatus(item.id))} />
+              <EditOutlined onClick={() => setDataEdit(dataEdit => ({ ...dataEdit, isEdit: !dataEdit.isEdit }))} />
             )}
           </Button>
         </Col>

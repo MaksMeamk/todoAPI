@@ -1,23 +1,22 @@
 import React from "react";
 import { Button, Form, Input, Radio, Row, Col } from "antd";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { fetchRegistration } from "../../Requests/index";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState({})
+  const onFinish = async () => {
+    try {
+      await fetchRegistration(data)
+      navigate("*");
+    }
+    catch (error) {
+      onFinishFailed(error.message)
+    }
 
-  const { username, email, password, age, gender } = useSelector(
-    (state) => state.registration.data,
-  );
-  const [data, setData] = useState({ username, email, password, age, gender })
-  const dispatch = useDispatch();
-
-  const onFinish = () => {
-    dispatch(fetchRegistration(data))
-    navigate("*");
-  };
+  }
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -61,7 +60,7 @@ const Registration = () => {
           >
             <Input
               onChange={(e) => setData((data) => ({ ...data, username: e.target.value }))}
-              value={username}
+              value={data.username}
             />
           </Form.Item>
           <Form.Item
@@ -77,7 +76,7 @@ const Registration = () => {
             <Input
               type="email"
               onChange={(e) => setData((data) => ({ ...data, email: e.target.value }))}
-              value={email}
+              value={data.email}
             />
           </Form.Item>
           <Form.Item
@@ -92,7 +91,7 @@ const Registration = () => {
           >
             <Input.Password
               onChange={(e) => setData((data) => ({ ...data, password: e.target.value }))}
-              value={password}
+              value={data.password}
             />
           </Form.Item>
           <Form.Item
@@ -107,7 +106,7 @@ const Registration = () => {
           >
             <Radio.Group
               onChange={(e) => setData((data) => ({ ...data, gender: e.target.value }))}
-              value={gender}
+              value={data.gender}
             >
               <Radio value={"male"}>Male</Radio>
               <Radio value={"female"}>Female</Radio>
@@ -126,7 +125,7 @@ const Registration = () => {
             <Input
               type="number"
               onChange={(e) => setData((data) => ({ ...data, age: e.target.value }))}
-              value={age}
+              value={data.age}
             />
           </Form.Item>
           <Form.Item
