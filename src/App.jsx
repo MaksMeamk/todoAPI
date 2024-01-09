@@ -8,7 +8,7 @@ import PrivateRoute from "./Components/hoc/PrivateRoute";
 function App() {
   return (
     <div className="App">
-      <HashRouter basename="/todoAPI">
+      <HashRouter >
         <Routes>
           <Route path="*" element={<Authorization />} />
           <Route path="/registration" element={<Registration />} />
