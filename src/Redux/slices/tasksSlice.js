@@ -46,8 +46,11 @@ const tasksSlice = createSlice({
     },
     [fetchEditStatusTodo.fulfilled]: (state, action) => {
       state.status = 'succeeded';
-      const index = state.data.findIndex((item) => item.id === action.payload.id);
-      state.data[index].isCompleted = !state.data[index].isCompleted;
+      state.data.forEach(element => {
+        if (element.id === action.payload.id) {
+          element.isCompleted = !element.isCompleted
+        }
+      });
       state.data.sort((a, b) => a.isCompleted - b.isCompleted);
     },
     [fetchEditStatusTodo.rejected]: (state, action) => {
@@ -77,8 +80,12 @@ const tasksSlice = createSlice({
     },
     [fetchEditTodo.fulfilled]: (state, action) => {
       state.status = 'succeeded';
-      const index = state.data.findIndex((item) => item.id === action.payload.id);
-      state.data[index].title = action.payload.title;
+      state.data.forEach(element => {
+        if (element.id === action.payload.id) {
+          element.title = action.payload.title
+        }
+      });
+
     },
     [fetchEditTodo.rejected]: (state, action) => {
       state.status = 'failed';

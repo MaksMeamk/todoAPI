@@ -3,26 +3,20 @@ import CustomInput from "../CustomInput";
 import Todo from "../Todo";
 import { Row, Col, List, Button } from "antd";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoadTasks } from "../../Requests/index";
-import { useState } from "react";
+import LogOut from "../LogOut";
 
 const Tasks = () => {
   const { data: tasks, isLoad } = useSelector((state) => state.tasks);
-  const navigate = useNavigate();
+  const inProgress = tasks.filter((item) => !item.isCompleted).length;
+  const successe = tasks.filter((item) => item.isCompleted).length;
+
   const dispatch = useDispatch();
-
-
   useEffect(() => {
     dispatch(fetchLoadTasks())
   }, []);
-
-  const logOut = () => {
-    navigate("/");
-    localStorage.clear();
-  };
-
   return (
     <>
       <Row justify="center">
@@ -35,10 +29,10 @@ const Tasks = () => {
           <h2>
             All: {tasks.length}{" "}
             <span style={{ color: "orange" }}>
-              In progress: {tasks.filter((item) => !item.isCompleted).length}{" "}
+              In progress: {inProgress + " "}
             </span>
             <span style={{ color: "green" }}>
-              Successe: {tasks.filter((item) => item.isCompleted).length}
+              Successe: {successe}
             </span>
           </h2>
         </Col>
@@ -58,11 +52,12 @@ const Tasks = () => {
             renderItem={(item) => <Todo key={item.id} item={item} />}
           />
         </Col>
-        <Col>
+        <LogOut />
+        {/* <Col>
           <Button type="primary" onClick={() => logOut()}>
             Log out
           </Button>
-        </Col>
+        </Col> */}
       </Row>
     </>
   );
